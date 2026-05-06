@@ -3,5 +3,8 @@ sample_data/*.xlsx
 sample_data/model_objects/*
 sample_data/model_predictions/*
 
+data/*
+
 .vscode
 .DS_Store
+__pycache__
