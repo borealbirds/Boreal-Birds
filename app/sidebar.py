@@ -4,13 +4,13 @@ def sidebar():
 
     return ui.sidebar(
         ui.input_select(
-            "species",
-            "Species",
-            choices=[
-                "Canada Warbler",
-                "Clay-colored Sparrow"
-            ],
-        ),
+                "species",
+                "Species",
+                choices=[
+                    "CAWA",
+                    "CCSP"
+                ],
+            ),
         ui.input_select(
             "region",
             "Region",
@@ -26,6 +26,6 @@ def sidebar():
             min=1990,
             max=2020,
             value=2020,
-            step=1,
+            step=5,
         ),
     )

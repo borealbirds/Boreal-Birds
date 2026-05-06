@@ -4,6 +4,7 @@ from tabs.about import about_tab
 from tabs.model_v4 import model_v4_tab
 from tabs.model_v5 import model_v5_tab
 from tabs.methods import methods_tab
+from server.server_v5 import server_v5
 
 from sidebar import sidebar
 
@@ -26,6 +27,9 @@ app_ui = ui.page_navbar(
 
 
 def server(input: Inputs):
+
+    # Register Model V5 outputs
+    server_v5(input)
 
     @render.plot
     def plot():

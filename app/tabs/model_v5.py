@@ -1,4 +1,5 @@
 from shiny import ui
+from shinywidgets import output_widget
 
 def model_v5_tab():
 
@@ -10,7 +11,7 @@ def model_v5_tab():
         ui.navset_card_underline(
             ui.nav_panel(
                 "Map",
-                ui.p("map_placeholder")
+                output_widget("map_widget")
             ),
             ui.nav_panel(
                 "Land Cover",
