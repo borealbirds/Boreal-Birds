@@ -1,8 +1,4 @@
-sample_data/*.csv
-sample_data/*.xlsx
-sample_data/model_objects/*
-sample_data/model_predictions/*
-
+sample_data/*
 data/*
 
 .vscode

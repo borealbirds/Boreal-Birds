@@ -15,4 +15,6 @@ dependencies:
   - openpyxl
   - gdal
   - polars
+  - ipyleaflet
+  - localtileserver
 prefix: /Users/harrisonlee/miniforge3/envs/bird
