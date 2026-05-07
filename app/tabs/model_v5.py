@@ -11,15 +11,26 @@ def model_v5_tab():
         ui.navset_card_underline(
             ui.nav_panel(
                 "Map",
-                output_widget("map_widget")
+                ui.input_radio_buttons(
+                    "raster_band",
+                    "Raster band",
+                    choices={
+                        1: "Mean Density (birds/hectare)",
+                        2: "Standard Deviation",
+                        3: "Mean Distance",
+                    },
+                    selected=1,
+                    inline=True
+                ),
+                output_widget("map_widget"),
             ),
             ui.nav_panel(
                 "Land Cover",
-                ui.p("land_cover_placeholder")
+                ui.p("land_cover_placeholder"),
             ),
             ui.nav_panel(
                 "Population Size",
-                ui.p("population_size_placeholder")
+                ui.p("population_size_placeholder"),
             ),
             title="Model Results",
         ),

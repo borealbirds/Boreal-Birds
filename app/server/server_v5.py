@@ -79,6 +79,7 @@ def server_v5(input: Inputs):
         tile_layer = get_leaflet_tile_layer(
             client,
             colormap="ylgn",
+            indexes=[input.raster_band()]
         )
 
         m.add_layer(tile_layer)
@@ -86,15 +87,16 @@ def server_v5(input: Inputs):
             value="""
             <div style="
                 background: white;
-                padding: 8px 10px;
-                border-radius: 4px;
-                font-size: 12px;
-                box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+                padding: 5px 6px;
+                border-radius: 3px;
+                font-size: 10px;
+                line-height: 1.1;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.15);
             ">
-                <div style="margin-bottom: 4px;"><b>Relative abundance</b></div>
+                <div style="margin-bottom: 3px;"><b>Low → High</b></div>
                 <div style="
-                    width: 140px;
-                    height: 12px;
+                    width: 90px;
+                    height: 8px;
                     background: linear-gradient(
                         to right,
                         #ffffe5,
@@ -106,14 +108,6 @@ def server_v5(input: Inputs):
                     );
                     border: 1px solid #999;
                 "></div>
-                <div style="
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 2px;
-                ">
-                    <span>Low</span>
-                    <span>High</span>
-                </div>
             </div>
             """
         )
