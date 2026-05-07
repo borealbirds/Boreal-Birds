@@ -19,9 +19,12 @@ def sidebar():
             "Region",
             choices=[],
         ),
-        ui.input_select(
+        ui.input_slider(
             "year",
             "Year",
-            choices=[],
+            min=1990,
+            max=2020,
+            value=2020,
+            step=5,
         ),
     )

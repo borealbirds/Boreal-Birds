@@ -26,20 +26,23 @@ def server_v5(input: Inputs):
         )
 
     @reactive.effect
-    def _update_years():
+    def _update_year_range():
         species = input.species()
         region = input.region()
 
         if not species or not region:
-            ui.update_select("year", choices=[], selected=None)
             return
 
         years = available_years(species, region)
 
-        ui.update_select(
+        if not years:
+            return
+
+        ui.update_slider(
             "year",
-            choices=years,
-            selected=years[-1] if years else None,
+            min=min(years),
+            max=max(years),
+            value=max(years),
         )
 
     @reactive.calc

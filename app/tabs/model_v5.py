@@ -15,7 +15,7 @@ def model_v5_tab():
                     "raster_band",
                     "Raster band",
                     choices={
-                        1: "Mean Density (birds/hectare)",
+                        1: "Mean Density (Male birds/hectare)",
                         2: "Standard Deviation",
                         3: "Mean Distance",
                     },
