@@ -17,4 +17,5 @@ dependencies:
   - polars
   - ipyleaflet
   - localtileserver
+  - fastexcel
 prefix: /Users/harrisonlee/miniforge3/envs/bird
