@@ -16,9 +16,14 @@ from shared import (
 
 
 def server_v5(input: Inputs):
+    """
+    Main server logic for the Model V5 tab, managing reactive data flow 
+    and spatial visualization.
+    """
 
     @reactive.calc
     def species_info():
+        """Lookup and return taxonomic metadata for the currently selected species."""
         df = load_species_metadata()
 
         species_id = input.species()
@@ -42,6 +47,7 @@ def server_v5(input: Inputs):
 
     @render.ui
     def bird_info():
+        """Render the HTML profile header featuring the species image and metadata string."""
         info = species_info()
 
         if info is None:
@@ -60,11 +66,6 @@ def server_v5(input: Inputs):
                 ui.img(
                     id="species_img",
                     src=img_src,
-                    # style=(
-                    #     "width: 200px; height: 150px; object-fit: cover; "
-                    #     "border-radius: 6px; cursor: pointer;"
-                    #     "display: block;"
-                    # ),
                     style="width:200px; height:150px; object-fit:cover; border:1px solid #ddd;",
                 ),
                 ui.div(
@@ -81,6 +82,7 @@ def server_v5(input: Inputs):
 
     @reactive.effect
     def _update_regions():
+        """Update the region dropdown choices dynamically based on species availability."""
         species_id = input.species()
 
         if not species_id:
@@ -97,6 +99,7 @@ def server_v5(input: Inputs):
 
     @reactive.effect
     def _update_year_range():
+        """Update the slider range and default value based on available temporal data."""
         species_id = input.species()
         region = input.region()
 
@@ -117,6 +120,7 @@ def server_v5(input: Inputs):
 
     @reactive.calc
     def tile_client():
+        """Initialize and return a TileClient for the specific raster file selected."""
         species_id = input.species()
         region = input.region()
         year = input.year()
@@ -137,6 +141,7 @@ def server_v5(input: Inputs):
 
     @render_widget
     def map_widget():
+        """Generate the interactive map widget with the tile layer and legend."""
         client = tile_client()
 
         if client is None:

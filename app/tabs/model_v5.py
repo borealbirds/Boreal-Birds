@@ -2,7 +2,18 @@ from shiny import ui
 from shinywidgets import output_widget
 
 def model_v5_tab():
+    """
+    Generate the UI layout for the Model V5 results tab.
 
+    This function constructs a navigation panel containing a bird information 
+    header and a multi-tabbed card interface. The card interface allows users 
+    to toggle between a spatial map with band selection, land cover analytics, 
+    and population size estimates.
+
+    Returns
+    -------
+    shiny.ui
+    """
     return ui.nav_panel(
         "Model V5",
         
