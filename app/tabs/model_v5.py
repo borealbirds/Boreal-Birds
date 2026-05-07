@@ -5,15 +5,15 @@ def model_v5_tab():
 
     return ui.nav_panel(
         "Model V5",
-        ui.card(
-            ui.p("Bird Info Card"),
-        ),
+        
+        ui.output_ui("bird_info"),
+
         ui.navset_card_underline(
             ui.nav_panel(
                 "Map",
                 ui.input_radio_buttons(
                     "raster_band",
-                    "Raster band",
+                    None,
                     choices={
                         1: "Mean Density (Male birds/hectare)",
                         2: "Standard Deviation",

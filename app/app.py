@@ -86,17 +86,6 @@ def server(input: Inputs):
     # Register Model V5 outputs
     server_v5(input)
 
-    @render.plot
-    def plot():
-        return "plot"
+img_dir = Path(__file__).parent / "img"
 
-    @render.text
-    def text():
-        return "text"
-
-    @render.data_frame
-    def data():
-        return "data"
-
-
-app = App(app_ui, server)
+app = App(app_ui, server, static_assets={"/img": str(img_dir)})
