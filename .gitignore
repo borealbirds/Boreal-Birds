@@ -1,6 +1,9 @@
 sample_data/*
+data/*
 
 .vscode
 .DS_Store
 __pycache__
+notebooks/benchmarks/*
+notebooks/.ipynb_checkpoints/*
 .ipynb_checkpoints
