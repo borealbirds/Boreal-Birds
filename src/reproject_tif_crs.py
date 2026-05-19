@@ -1,6 +1,8 @@
 '''
-Reproject BAM model TIF outputs from EPSG:3978 (Statistics Canada Lambert)
-to EPSG:4326 (WGS84 lat/lon) for use in the dashboard.
+Reproject GeoTIFF model outputs from any CRS to EPSG:4326 (WGS84 lat/lon)
+for use in mapping in the dashboard.
+
+Test data: EPSG:3978 (Statistics Canada Lambert) to EPSG:4326 (WGS84 lat/lon) 
 
 Input:   data/raw/*.tif
 Output:  data/processed/reprojected/*.tif  (same filename, reprojected)
@@ -15,7 +17,6 @@ import argparse
 import time
 from pathlib import Path
 
-import numpy as np
 import rasterio
 from rasterio.warp import (
     calculate_default_transform,
@@ -37,7 +38,7 @@ REPROJECTED_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── CLI ────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser(
-    description="Reproject BAM TIFs from EPSG:3978 → EPSG:4326."
+    description="Reproject GeoTIFF files to EPSG:4326 (WGS84 lat/lon)."
 )
 parser.add_argument(
     "--resume",
@@ -63,13 +64,13 @@ def reproject_tif(src_path: Path, dst_path: Path) -> dict:
     t0 = time.perf_counter()
 
     with rasterio.open(src_path) as src:
-        src_crs    = src.crs
-        src_nodata = src.nodata
+        src_crs    = src.crs                
+        src_nodata = src.nodata            
 
         # Calculate the transform, width, and height in the target CRS
         transform, width, height = calculate_default_transform(
-            src.crs,
-            TARGET_CRS,
+            src.crs,                       # <= reads whatever CRS is actually in the file
+            TARGET_CRS,                   # <= always reprojects TO EPSG:4326
             src.width,
             src.height,
             *src.bounds,
