@@ -1015,7 +1015,9 @@ function updateLb() {
         cov_choices = sorted(covariates.get_column("name").unique().to_list())
         # cov_choices.append("year")
         res_choices = covariates.get_column("prediction_resolution").unique().to_list()
-
+        bcr_choices = ['can40', 'can72','can13','usa2','can14','can70','can12', 'can5', 'can9',
+                       'can61','can60','can3','can11','usa41423','can82',
+                       'can71','can81','can41','can80','usa43', 'usa40','can10']
 
         return ui.layout_columns(
             ui.input_select(
@@ -1028,14 +1030,34 @@ function updateLb() {
                 label="Select Resolution",
                 choices=res_choices
             ),
+            ui.input_select(
+                id="bcr_filter",
+                label="Select BCR",
+                choices=bcr_choices
+            ),
             col_widths=(12, 12)
         )
+
+    @reactive.Calc
+    def covariate_df():
+        req(input.covariate_filter())
+        req(input.resolution_filter())
+        req(input.species_v5())
+        
+        bird_code = birds.filter(pl.col("english") == input.species_v5()).item(0,"id")
+
+        return get_cov_fx_data(
+            covariates.filter(
+                (pl.col("name") == input.covariate_filter()) & (pl.col("prediction_resolution") == input.resolution_filter())
+            ).get_column("variable").to_list()
+        ).filter(pl.col("species") == bird_code)
 
     @render_altair
     def marginal_fx_chart():
         req(input.covariate_filter())
         req(input.resolution_filter())
         req(input.species_v5())
+        req(input.bcr_filter())
         
         bird_code = birds.filter(pl.col("english") == input.species_v5()).item(0,"id")
 
@@ -1043,28 +1065,48 @@ function updateLb() {
                 covariates.filter(
                     (pl.col("name") == input.covariate_filter()) & (pl.col("prediction_resolution") == input.resolution_filter())
                 ).get_column("variable").to_list()
-            ).filter(pl.col("species") == bird_code)
+            ).filter((pl.col("species") == bird_code) & (pl.col("bcr") == input.bcr_filter()))
         
-        viz_df = fx_df.with_columns(pl.col("x").round(2)).group_by(["bcr", "x"]).agg(pl.col("y").mean().alias("mean_y"))
 
-        points = alt.Chart(viz_df).mark_point().encode(
-            alt.X("x:N")
-                .title(f"Covariate: {input.covariate_filter()}")
-                .bin(maxbins=20),
-            alt.Y("mean_y:Q")
-                .title("Marginal Effect on Density")
-                .axis(labelLimit=0),
-            alt.Color(
-                "bcr:N",
-                legend=alt.Legend(title="BCR")
-            ),
+        #viz_df = fx_df.with_columns(pl.col("x").round(2)).group_by(["bcr", "x"]).agg(pl.col("y").mean().alias("mean_y"))
+
+        # points = alt.Chart(fx_df).mark_point().encode(
+        #     alt.X("x:N")
+        #         .title(f"Covariate: {input.covariate_filter()}")
+        #         .bin(maxbins=20),
+        #     alt.Y("mean_y:Q")
+        #         .title("Marginal Effect on Density")
+        #         .axis(labelLimit=0),
+        #     alt.Color(
+        #         "bcr:N",
+        #         legend=alt.Legend(title="BCR")
+        #     ),
+        # )
+
+        # # trendline = points.transform_regression(
+        # #     'x', 'y'
+        # # ).mark_line(size=3)
+
+        # return (points)
+        chart = alt.Chart(fx_df).mark_line().encode(
+            alt.X("x")
+                .title(f"Covariate: {input.covariate_filter()}"),
+            alt.Y("fit"),
+            alt.Color("bcr")
+        ).properties(
+            width="container",
+            height="container"
         )
 
-        # trendline = points.transform_regression(
-        #     'x', 'y'
-        # ).mark_line(size=3)
-
-        return (points)
+        band = alt.Chart(fx_df).mark_errorband().encode(
+            alt.X("x"),
+            alt.Y(
+                "lwr",
+                title="Marginal effect on denisty (birds/ha)"
+            ),
+            alt.Y2("upr"),
+        )
+        return (band + chart)
 
 
     @render.download(filename=lambda: f"{date.today().isoformat()}_BAMV5-results.xlsx")

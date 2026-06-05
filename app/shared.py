@@ -37,13 +37,13 @@ def get_cov_fx_data(covs: list) -> pl.DataFrame:
     Return the associated marginal effects file for the selected covariates.
     """
     
-    filePath = MARGINAL_FX_DIR / covs[0] / "marginalsv5.csv"
+    filePath = MARGINAL_FX_DIR / covs[0] / "marginalsv5_gampredictions.csv" # "marginalsv5.csv"
     
     df =  pl.read_csv(filePath)
 
     if len(covs) > 1:
         for i in range(1,len(covs)):
-            filePath_1 = MARGINAL_FX_DIR / covs[i] / "marginalsv5.csv"
+            filePath_1 = MARGINAL_FX_DIR / covs[i] / "marginalsv5_gampredictions.csv" # "marginalsv5.csv"
             df_1 = pl.read_csv(filePath_1)
             df = df.vstack(df_1).rechunk()
     
