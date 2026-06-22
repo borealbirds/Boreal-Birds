@@ -2,7 +2,7 @@
 
 An interactive dashboard for exploring Boreal Avian Modelling (BAM) bird population and habitat model outputs across boreal North America. The project focuses on improving accessibility and interactivity for BAM model visualizations by replacing static outputs with dynamic maps, charts, filters, and summary metrics.
 
-This initiative is a partnership between Masters of Data Science (MDS) students at the University of British Columbia (UBC), in collaboration and consultation with the Boreal Avian Modelling Centre (BAM). 
+This initiative is a partnership between Masters of Data Science (MDS) students at the University of British Columbia (UBC), in collaboration and consultation with the Boreal Avian Modelling Centre (BAM).
 
 ## Features
 
@@ -15,7 +15,7 @@ This initiative is a partnership between Masters of Data Science (MDS) students 
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```bash
 .
@@ -26,11 +26,11 @@ This initiative is a partnership between Masters of Data Science (MDS) students 
 └── README.md
 ```
 
-# Environment Setup
+## Environment Setup
 
-## Install Miniconda
+### Install Miniconda
 
-### Linux
+#### Linux
 
 ```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -38,7 +38,7 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
-### macOS
+#### macOS
 
 ```bash
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
@@ -46,7 +46,7 @@ curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
 bash Miniconda3-latest-MacOSX-arm64.sh
 ```
 
-### Windows
+#### Windows
 
 Download and install Miniconda from:
 
@@ -54,7 +54,7 @@ https://www.anaconda.com/download/success
 
 ---
 
-## Clone the Repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/UBC-MDS/Boreal-Birds
@@ -64,7 +64,7 @@ cd Boreal-Birds
 
 ---
 
-## Create and Activate the Conda Environment
+### Create and Activate the Conda Environment
 
 ```bash
 conda env create -f environment.yml
@@ -74,7 +74,7 @@ conda activate boreal-birds
 
 ---
 
-## Run Jupyter Lab
+### Run Jupyter Lab
 
 ```bash
 jupyter lab
@@ -82,7 +82,7 @@ jupyter lab
 
 ---
 
-## Run the Shiny Dashboard
+### Run the Shiny Dashboard
 
 ```bash
 shiny run app/app.py
@@ -96,13 +96,13 @@ python app/app.py
 
 ---
 
-## Deactivate Environment
+### Deactivate Environment
 
 ```bash
 conda deactivate
 ```
 
-# Data Notes
+## Data Notes
 
 The project uses:
 
@@ -112,7 +112,8 @@ The project uses:
 
 Large raster files may require preprocessing into Cloud Optimized GeoTIFFs (COGs) for improved performance.
 
-# Technologies Used:
+## Technologies Used
+
 - Python
 - Jupyter Notebook
 - Shiny for Python
@@ -122,17 +123,13 @@ Large raster files may require preprocessing into Cloud Optimized GeoTIFFs (COGs
 - Leaflet / Plotly
 - Conda
 
-# Authors (UBC MDS):
-- Harrison Li
-- Joel Peterson
-- Suryash Chakravarty
-- Wesley Beard
+## Acknowledgements
 
+This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project. Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
 
-# References:
+## References
 
 - Boreal Avian Modelling Centre: [www.github.io/boreal-birds](https://borealbirds.github.io/)
 - Cloud Optimized GeoTIFF (COG): https://cogeo.org/
 - BAM Shiny Explorer: https://borealbirds.shinyapps.io/bam_landbird_explorer/
 - Landbird Models V5: https://github.com/borealbirds/LandbirdModelsV5
-
