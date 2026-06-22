@@ -103,9 +103,11 @@ The project uses:
 - CSV observation datasets
 - Excel metadata files
 
-This data lives and is retrieved from an external server.
+Currently, this data lives and is retrieved from an external server.
 
 ## Technologies Used
+
+For a more exhaustive list, please see the environment.yml file.
 
 - Python
 - Shiny for Python
@@ -117,11 +119,13 @@ This data lives and is retrieved from an external server.
 
 ## Acknowledgements
 
-This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project. Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
+This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project.
+
+Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
 
 ## References
 
-- Boreal Avian Modelling Centre: [www.github.io/boreal-birds](https://borealbirds.github.io/)
-- Cloud Optimized GeoTIFF (COG): https://cogeo.org/
-- BAM Shiny Explorer: https://borealbirds.shinyapps.io/bam_landbird_explorer/
-- Landbird Models V5: https://github.com/borealbirds/LandbirdModelsV5
+- Boreal Avian Modelling Centre: [Boreal Birds](https://borealbirds.github.io/)
+- Cloud Optimized GeoTIFF (COG): [cogeo.org](https://cogeo.org/)
+- BAM Shiny Explorer: [BAM Landbird Explorer](https://borealbirds.shinyapps.io/bam_landbird_explorer/)
+- Landbird Models V5: [Landbird Models V5](https://github.com/borealbirds/LandbirdModelsV5)

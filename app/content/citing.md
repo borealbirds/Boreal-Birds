@@ -12,4 +12,6 @@ Sólymos, P., D. Stralberg, and E. C. Knight. 2025. BAM Generalized National Mod
 
 #### Dashboard Development Acknowledgement
 
-This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project. Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
+This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project.
+
+Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
