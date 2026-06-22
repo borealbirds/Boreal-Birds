@@ -16,7 +16,7 @@ consistent dashboard filtering sidebars across distinct framework versions.
 ### sidebar { #app.ui.layout.sidebar.sidebar }
 
 ```python
-ui.layout.sidebar.sidebar(model_version)
+ui.layout.sidebar.sidebar(model_version, year_slider=True)
 ```
 
 Initialize the standardized filtering sidebar layout for bird model views.
@@ -26,9 +26,10 @@ sourced directly from active species metadata collections.
 
 #### Parameters {.doc-section .doc-section-parameters}
 
-| Name          | Type   | Description                                                                                        | Default    |
-|---------------|--------|----------------------------------------------------------------------------------------------------|------------|
-| model_version | str    | The version string identifier ('v4' or 'v5') used to namespace  the reactive interface components. | _required_ |
+| Name          | Type   | Description                                                                                                 | Default    |
+|---------------|--------|-------------------------------------------------------------------------------------------------------------|------------|
+| model_version | str    | The version string identifier ('v4' or 'v5') used to namespace  the reactive interface components.          | _required_ |
+| year_slider   | bool   | If True, includes a slider input for years between 1990 and 2020. If False, disable the slider from sidebar | `True`     |
 
 #### Returns {.doc-section .doc-section-returns}
 
