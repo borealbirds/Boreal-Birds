@@ -9,9 +9,8 @@ This initiative is a partnership between Masters of Data Science (MDS) students 
 - Interactive raster map visualizations
 - Bird species and region filters
 - Summary charts and tables
-- Exploration of BAM model outputs (v4, v5, and future versions)
-- Jupyter Notebook based exploratory data analysis (EDA)
-- Shiny-based dashboard prototype
+- Exploration of BAM Landbird version 5 model outputs
+- Shiny-based dashboard
 
 ---
 
@@ -19,10 +18,12 @@ This initiative is a partnership between Masters of Data Science (MDS) students 
 
 ```bash
 .
-├── notebooks/          # Jupyter notebooks for EDA and preprocessing
-├── data/               # Local data storage (not included in repo)
-├── app/                # Shiny dashboard application
-├── environment.yml     # Conda environment file
+├── app/               # Shiny dashboard application
+├── data/              # Local data storage (not included in repo)
+├── docs/              # File for GitHub documentation page
+├── src/               # Code to retrieve bird sounds and images
+├── environment.yml    # Conda environment file
+├── Makefile           # Make commands to update and generate .qmd files for documentation
 └── README.md
 ```
 
@@ -50,7 +51,7 @@ bash Miniconda3-latest-MacOSX-arm64.sh
 
 Download and install Miniconda from:
 
-https://www.anaconda.com/download/success
+[https://www.anaconda.com/download/success](https://www.anaconda.com/download/success)
 
 ---
 
@@ -70,14 +71,6 @@ cd Boreal-Birds
 conda env create -f environment.yml
 
 conda activate boreal-birds
-```
-
----
-
-### Run Jupyter Lab
-
-```bash
-jupyter lab
 ```
 
 ---
@@ -106,21 +99,20 @@ conda deactivate
 
 The project uses:
 
-- GeoTIFF raster files (.tif)
+- GeoTIFF raster files (.tif) - optimized into into Cloud Optimized GeoTIFFs (COGs) for improved performance.
 - CSV observation datasets
 - Excel metadata files
 
-Large raster files may require preprocessing into Cloud Optimized GeoTIFFs (COGs) for improved performance.
+This data lives and is retrieved from an external server.
 
 ## Technologies Used
 
 - Python
-- Jupyter Notebook
 - Shiny for Python
-- Pandas
+- Polars
 - GeoPandas
 - Rasterio
-- Leaflet / Plotly
+- Leaflet
 - Conda
 
 ## Acknowledgements
