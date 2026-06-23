@@ -117,6 +117,17 @@ For a more exhaustive list, please see the environment.yml file.
 - Leaflet
 - Conda
 
+## Image and Sound Assets:
+
+Images and sounds were obtained using APIs from conservation sites.
+The images were pulled from iNaturalist using their free API: https://api.inaturalist.org/v1
+
+Sounds were pulled from Xeno-Canto using their free API. The API requires a verified account to be acquired and can be obtained here: https://xeno-canto.org/explore/api
+
+Attributions for the individual images and sounds are displayed with the individual assets in the image slide modals and spectrogram modal screens. This screen is seen by clicking on an image under the *Info* => *Image* tab for images, and by clicking on the spectrogram under the *Info* => *Sounds* => 
+
+
+
 ## Acknowledgements
 
 This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project.
