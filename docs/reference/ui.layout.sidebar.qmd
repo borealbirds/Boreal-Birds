@@ -26,10 +26,10 @@ sourced directly from active species metadata collections.
 
 #### Parameters {.doc-section .doc-section-parameters}
 
-| Name          | Type   | Description                                                                                                 | Default    |
-|---------------|--------|-------------------------------------------------------------------------------------------------------------|------------|
-| model_version | str    | The version string identifier ('v4' or 'v5') used to namespace  the reactive interface components.          | _required_ |
-| year_slider   | bool   | If True, includes a slider input for years between 1990 and 2020. If False, disable the slider from sidebar | `True`     |
+| Name          | Type   | Description                                                                                                                                                                                  | Default    |
+|---------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| model_version | str    | The version string identifier ('v4' or 'v5') used to namespace  the reactive interface components.                                                                                           | _required_ |
+| year_slider   | bool   | If True, includes a slider input for years between 1990 and 2020. If False, disables the slider from sidebar in favour of a dropdown menu that can be used to limit options to select years. | `True`     |
 
 #### Returns {.doc-section .doc-section-returns}
 
