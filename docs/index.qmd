@@ -1,6 +1,6 @@
 ---
-title: "Boreal Birds Dashboard Documentation"
-subtitle: "Boreal Avian Modelling Center (BAM)"
+title: "Dashboard Developer Documentation"
+subtitle: "How to Contribute, Update, and Play"
 page-layout: full
 about:
   template: marquee
@@ -8,10 +8,6 @@ about:
     - icon: github
       text: GitHub Repository
       href: https://github.com/UBC-MDS/Boreal-Birds
----
-
-Welcome to the documentation for the **Boreal Birds Dashboard**.
-
 ---
 
 ## Quick Start Guide

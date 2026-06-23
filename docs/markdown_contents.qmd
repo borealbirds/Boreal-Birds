@@ -3,10 +3,9 @@ title: "Markdown Contents"
 page-layout: full
 ---
 
-# General Contents
+## General Contents
 
 ::: {.list-table}
-
 - - Markdown files
   - Description
   - Reference
@@ -26,14 +25,11 @@ page-layout: full
 - - `citing.md`
   - instructions on how to cite the model results
   - `app/ui/model_access.py`
-
 :::
 
-# Methods (see `app/content/methods.py`)
-
+## Methods (see `app/content/methods.py`)
 
 ::: {.list-table}
-
 - - Files
   - Description
 
@@ -42,11 +38,9 @@ page-layout: full
 
 - - `methods-sections.yaml`
   - yaml file that points to different markdown files for methods accordion listed below
-
 :::
 
 ::: {.list-table}
-
 - - Markdown Files
   - Description
 
@@ -82,5 +76,4 @@ page-layout: full
 
 - - `data-availability.md`
   - Data Availability
-
 :::

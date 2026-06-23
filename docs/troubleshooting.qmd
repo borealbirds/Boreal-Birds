@@ -3,7 +3,7 @@ title: "Troubleshooting"
 page-layout: full
 ---
 
-# TiTiler Unavailable
+## TiTiler Unavailable
 
 This issue occurs when the dashboard fails to load raster layers and requests to the TiTiler API return errors or time out.
 
@@ -25,9 +25,9 @@ The issue is typically temporary and does not appear to be caused by problems wi
 
 In many cases, [Posit Connect Cloud](https://connect.posit.cloud) automatically attempts to restart the application after some time.
 
-## Resolution
+### Resolution
 
-### Option 1: Wait for Automatic Recovery
+#### Option 1: Wait for Automatic Recovery
 
 If the dashboard displays the **Map service starting** message:
 
@@ -37,7 +37,7 @@ If the dashboard displays the **Map service starting** message:
 
 Posit Connect Cloud may automatically restart the application without requiring user intervention.
 
-### Option 2: Republish the Application
+#### Option 2: Republish the Application
 
 If immediate recovery is required, manually republish the TiTiler application.
 
@@ -48,7 +48,7 @@ If immediate recovery is required, manually republish the TiTiler application.
 4. Wait for the deployment process to complete.
 5. Refresh the dashboard and verify that raster layers load successfully.
 
-## Additional Information
+### Additional Information
 
 If the application continues to fail after multiple republish attempts, review the application logs in [Posit Connect Cloud](https://connect.posit.cloud) to identify potential deployment or runtime errors unrelated to this intermittent startup issue.
 
@@ -61,6 +61,6 @@ For other dashboard messages, refer to the following status descriptions:
 | `tiler_unavailable` | **Map service starting** — The raster tiling service (TiTiler API) is currently unavailable. Please try again in a few minutes. |
 | `missing`           | **Raster unavailable** — The requested raster file could not be found. |
 
-#### Additional Resources
+##### Additional Resources
 
 * [Posit Connect Documentation - Troubleshooting](https://docs.posit.co/connect/user/troubleshooting/)
