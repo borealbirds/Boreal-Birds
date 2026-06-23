@@ -1,0 +1,16 @@
+{
+  "common_name": "Dunlin",
+  "scientific_name": "alpina",
+  "sex": "female",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 365332982,
+  "attribution": "(c) Sega Black - Sea, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/206590121",
+  "obs_date": "2024-04-11",
+  "recorded_by": "segablack-sea",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/365332982/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "7_365332982.jpg"
+}

@@ -1,0 +1,16 @@
+{
+  "common_name": "Canada Jay",
+  "scientific_name": "Perisoreus canadensis",
+  "sex": "female",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 60100081,
+  "attribution": "(c) karenlanderson, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/37859725",
+  "obs_date": "2020-01-22",
+  "recorded_by": "karenlanderson",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/60100081/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "7_60100081.jpg"
+}

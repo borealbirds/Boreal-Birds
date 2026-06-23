@@ -1,0 +1,16 @@
+{
+  "common_name": "Veery",
+  "scientific_name": "fuscescens",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 49939158,
+  "attribution": "(c) Pamela Fisher, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/31878110",
+  "obs_date": "2019-06-12",
+  "recorded_by": "goldeagle60",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/49939158/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "3_49939158.jpg"
+}

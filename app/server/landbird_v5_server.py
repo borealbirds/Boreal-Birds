@@ -52,6 +52,45 @@ warnings.filterwarnings(
     module="numpy.ma.core"
 )
 
+
+def _pretty_license(value: str) -> str:
+    """Normalize a license string (CC URL or short code) to a clean label.
+
+    Examples
+    --------
+    'https://creativecommons.org/licenses/by-nc-sa/4.0/' -> 'CC BY-NC-SA 4.0'
+    'cc-by-nc'                                            -> 'CC BY-NC'
+    ''                                                    -> ''
+    """
+    if not value:
+        return ""
+    v = value.strip()
+    low = v.lower()
+    if "creativecommons.org" in low:
+        if "publicdomain" in low or "/zero/" in low:
+            return "CC0"
+        # pull the ".../licenses/<code>/<version>/" segment
+        parts = [p for p in low.split("creativecommons.org/licenses/", 1)[-1].split("/") if p]
+        if parts:
+            label = "CC " + "-".join(t.upper() for t in parts[0].split("-"))
+            if len(parts) > 1 and parts[1].replace(".", "").isdigit():
+                label += " " + parts[1]
+            return label
+        return "Creative Commons"
+    if low.startswith("cc"):
+        return "CC " + "-".join(t.upper() for t in v.split("-")[1:]) if "-" in v else v.upper()
+    return v
+
+
+def _source_label(url: str) -> str:
+    """Human-readable link label derived from the source URL."""
+    low = (url or "").lower()
+    if "inaturalist" in low:
+        return "iNaturalist ↗"
+    if "xeno-canto" in low or "xeno_canto" in low:
+        return "Xeno-Canto ↗"
+    return "Source ↗"
+
 # log in terminal
 print(f"\n\n\nTitiler API Health Status: \n\tTitiler is healthy: {tiler_is_healthy()}\n\n\n")
 
@@ -649,16 +688,36 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         if not audio_files:
             return ui.p("No audio files found.", class_="text-muted p-3")
 
-        # Load metadata keyed by song index (first segment of filename)
-        meta_map = {}
-        for mf in audio_dir.glob("*_metadata.json"):
-            try:
-                meta_map[mf.name.split("_")[0]] = json.loads(mf.read_text())
-            except Exception:
-                pass
+        # Index sidecars by stem (filename minus the _metadata.json suffix).
+        # mp3 and sidecar share a prefix but the suffix differs by source:
+        #   XC:   2_1087236_qA_0-07.mp3        <-> 2_1087236_metadata.json
+        #   iNat: inat_2_inat_77774398_213707.mp3 <-> ..._213707_metadata.json
+        _META_SUFFIX = "_metadata.json"
+        meta_index = {
+            mf.name[: -len(_META_SUFFIX)]: mf
+            for mf in audio_dir.glob("*_metadata.json")
+        }
 
-        songs = [
-            {
+        def _meta_for(mp3):
+            stem = mp3.stem
+            if stem in meta_index:                       # exact match (iNat-style)
+                return meta_index[stem]
+            cands = [k for k in meta_index if stem.startswith(k)]  # XC-style prefix
+            return meta_index[max(cands, key=len)] if cands else None
+
+        songs = []
+        for i, f in enumerate(audio_files, 1):
+            m = {}
+            mf = _meta_for(f)
+            if mf:
+                try:
+                    m = json.loads(mf.read_text())
+                except Exception:
+                    pass
+            source_url = (m.get("xeno_canto_url", "")
+                          or m.get("inat_url", "")
+                          or m.get("obs_url", ""))
+            songs.append({
                 "wsId": f"ws-{species_id}-{i}",
                 "specId": f"spec-{species_id}-{i}",
                 "metaId": f"meta-{species_id}-{i}",
@@ -667,14 +726,14 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 "label": f"Sound {i}",
                 "commonName": common_name,
                 "scientificName": scientific_name,
-                "recordist": (m := meta_map.get(str(i), {})).get("recordist", ""),
+                "recordist": m.get("recordist", ""),
                 "country": m.get("country", ""),
                 "date": m.get("date", ""),
                 "quality": m.get("quality", ""),
-                "license": m.get("license", ""),
-                "xc_url": m.get("xeno_canto_url", "") or m.get("obs_url", ""),
-            } for i, f in enumerate(audio_files, 1)
-        ]
+                "license": _pretty_license(m.get("license", "")),
+                "xc_url": source_url,
+                "sourceLabel": _source_label(source_url),
+            })
 
         song_blocks = [
             ui.div(

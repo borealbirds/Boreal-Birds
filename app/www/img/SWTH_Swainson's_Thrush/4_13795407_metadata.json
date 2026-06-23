@@ -1,0 +1,16 @@
+{
+  "common_name": "Swainson's Thrush",
+  "scientific_name": "ustulatus",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 13795407,
+  "attribution": "(c) Jamie Spence, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/10029492",
+  "obs_date": "2016-06-19",
+  "recorded_by": "wapisay",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/13795407/medium.jpg",
+  "size_kb": 150.0,
+  "local_file": "4_13795407.jpg"
+}

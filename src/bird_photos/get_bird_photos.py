@@ -89,6 +89,15 @@ MONOMORPHIC = {
     # ...
 }
 
+# Force the scientific name for species whose name resolution is unreliable.
+# Searching by an unambiguous binomial avoids fuzzy common-name collisions
+# (e.g. "Canada Jay" fuzzily matching Canada Goose). Keyed by English common name.
+SCI_OVERRIDE = {
+    "Canada Jay": "Perisoreus canadensis",
+    "Gray Jay":   "Perisoreus canadensis",
+    "Spruce Grouse": "Falcipennis canadensis",
+}
+
 # -- Session ------------------------------------------------------------
 session = requests.Session()
 session.headers.update({"User-Agent": "BorealBirds-Dashboard/1.0"})
@@ -155,9 +164,16 @@ def resolve_bird_taxon_id(name: str):
     aves = [t for t in results if t.get("iconic_taxon_name") == AVES_ICONIC]
     if not aves:
         return None, None
+    # Always prefer an exact name match (case-insensitive).
     for t in aves:
         if t.get("name", "").lower() == name.lower():
             return t.get("id"), t.get("name")
+    # No exact match. For a multi-word binomial, refuse to guess — a fuzzy
+    # first result is how wrong species slip in (e.g. Canada Goose for
+    # "Canada Jay"). Only fall back to the top Aves hit for a bare genus.
+    if len(name.split()) > 1:
+        print(f"  [warn] No exact Aves match for '{name}' — not guessing")
+        return None, None
     return aves[0].get("id"), aves[0].get("name")
 
 def get_annotations(obs):
@@ -482,7 +498,9 @@ def main():
     print(f"\n-- {mode}: {len(items)} species, target 12 each -----------")
     summary = []
     for english, info in items:
-        sci = info.get("scientific") or load_scientific_from_tsv(english)
+        sci = (SCI_OVERRIDE.get(english)
+               or info.get("scientific")
+               or load_scientific_from_tsv(english))
         if not sci:
             print(f"  [warn] No scientific name for {english} — skipping")
             summary.append((english, 0))
