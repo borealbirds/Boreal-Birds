@@ -122,9 +122,9 @@ For a more exhaustive list, please see the environment.yml file.
 Images and sounds were obtained using APIs from conservation sites.
 The images were pulled from iNaturalist using their free API: https://api.inaturalist.org/v1
 
-Sounds were pulled from Xeno-Canto using their free API. The API requires a verified account to be acquired and can be obtained here: https://xeno-canto.org/explore/api
+Sounds were pulled from Xeno-Canto using their free API, and if a suitable sound could not be found within Xeno-Canto, then iNaturalist was used as a fallback. The Xeno-Canto API requires a verified account to be acquired and can be obtained here: https://xeno-canto.org/explore/api
 
-Attributions for the individual images and sounds are displayed with the individual assets in the image slide modals and spectrogram modal screens. This screen is seen by clicking on an image under the *Info* => *Image* tab for images, and by clicking on the spectrogram under the *Info* => *Sounds* => 
+Attributions for the individual images and sounds are displayed with the assets in the image slide modal and spectrogram modal screens. This screen is seen by clicking on an image under the **Info** → **Image** tab for images, and by clicking on the spectrogram under the **Info** → **Sounds** → **Click to expand spectrogram**
 
 
 
@@ -132,7 +132,7 @@ Attributions for the individual images and sounds are displayed with the individ
 
 This dashboard was developed in collaboration with the UBC Master of Data Science program during the final capstone project.
 
-Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Peterson.
+Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and Joel Nicholas Peterson.
 
 ## References
 
@@ -140,3 +140,7 @@ Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and
 - Cloud Optimized GeoTIFF (COG): [cogeo.org](https://cogeo.org/)
 - BAM Shiny Explorer: [BAM Landbird Explorer](https://borealbirds.shinyapps.io/bam_landbird_explorer/)
 - Landbird Models V5: [Landbird Models V5](https://github.com/borealbirds/LandbirdModelsV5)
+- [Xeno-Canto](https://xeno-canto.org/)
+- [iNaturalist](https://www.inaturalist.org/)
+- [eBird](https://ebird.org/home)
+- [NatureCounts](https://www.naturecounts.ca/nc/default/main.jsp)
