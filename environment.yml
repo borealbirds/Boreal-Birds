@@ -1,4 +1,4 @@
-name: bird
+name: boreal-birds
 channels:
   - conda-forge
 dependencies:
