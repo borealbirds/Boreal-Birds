@@ -1,19 +1,26 @@
 ---
-title: Dashboard Deployment Instructions
+title: "Boreal Avian Modelling (BAM) Centre Dashboard"
+subtitle: "Deployment Documentation"
 page-layout: full
+about:
+  template: marquee
+  links:
+    - icon: github
+      text: GitHub Repository
+      href: https://github.com/UBC-MDS/Boreal-Birds
 ---
 
-# First Steps
+## First Steps
 
 This is a general guideline to deploy the dashboard on to posit connect cloud. We need to deploy 2 apps for the dashboard to be functional:
 
-1. Main Dashboard
-    - [GitHub Repository](https://github.com/UBC-MDS/Boreal-Birds/)
-2. TiTiler API: 
+1. TiTiler API: 
     - [GitHub Repository](https://github.com/UBC-MDS/MapTiler)
     - The TiTiler API powers dynamic tiling in the dashboard by converting remote COG rasters into web map tiles on demand. 
+2. Main Dashboard
+    - [GitHub Repository](https://github.com/UBC-MDS/Boreal-Birds/)
 
-## Instructions
+### Instructions
 1. Clone/Fork the 2 github repositories above
 2. Deploy the Titiler API on Posit Connect Cloud
 3. Copy the link of the deployed Titiler API
@@ -23,23 +30,23 @@ This is a general guideline to deploy the dashboard on to posit connect cloud. W
 5. Commit/Push the updated link to the Main Dashboard repository
 6. Deploy the Main Dashboard on Posit Connect Cloud
 
-## Notes
+### Notes
 - Please follow the instructions in [Posit Connect Cloud Deployment](#posit-connect-cloud-deployment) to see how to deploy an app on Posit Connect Cloud
 - Shiny is used as the deployment framework for both Apps
 
 
-# Posit Connect Cloud Deployment
-#### 1. Create an account. [https://connect.posit.cloud/](https://connect.posit.cloud/) 
+## Posit Connect Cloud Deployment
+### 1. Create an account. [https://connect.posit.cloud/](https://connect.posit.cloud/) 
 
-#### 2. Navigate to the home page.
+### 2. Navigate to the home page.
 ![](img/posit-homepage.png)
 
-#### 3. Select “Publish” from either the sidebar or blue button to the right of your name.
+### 3. Select “Publish” from either the sidebar or blue button to the right of your name.
 
-#### 4. Under “From GitHub”, select “Shiny” as your framework.
+### 4. Under “From GitHub”, select “Shiny” as your framework.
 ![](img/posit-framework.png)
 
-#### 5. Configure your source
+### 5. Configure your source
 1. Repositories must be public (for free accounts).
 2. Branch can be anything that is visible on the remote.
 3. Primary file can be anywhere - you will simply point to `app/app.py`.
@@ -49,5 +56,5 @@ This is a general guideline to deploy the dashboard on to posit connect cloud. W
 6. There are additional settings, but not used in our case.
 ![](img/posit-source.png)
 
-#### 6. Select “Publish.” Posit will do its processes and if there is an issue provide logs for tracing.
+### 6. Select “Publish.” Posit will do its processes and if there is an issue provide logs for tracing.
 ![](img/posit-publish.png)
