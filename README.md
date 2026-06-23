@@ -115,6 +115,8 @@ For a more exhaustive list, please see the environment.yml file.
 - GeoPandas
 - Rasterio
 - Leaflet
+- TiTiler
+- Wavesurfer-JS
 - Conda
 
 ## Image and Sound Assets
