@@ -272,7 +272,7 @@ def sound_script(sounds_json: str)-> ui.HTML:
                         progressColor: '#153B40', cursorColor: '#ff4444', cursorWidth: 2,
                         height: 56, normalize: true,
                         plugins: [Spectrogram.create({{
-                            container: specEl, labels: true, height: 300,
+                            container: specEl, labels: false, height: 300,
                             frequencyMax: 20000, frequencyMin: 0, fftSamples: 2048,
                             scale: 'mel', windowFunc: 'hann', gainDB: 20, rangeDB: 80, colorMap: 'gray', labelsColor: '#000',
                         }})],
