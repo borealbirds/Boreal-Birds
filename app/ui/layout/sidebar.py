@@ -23,7 +23,8 @@ def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
         the reactive interface components.
     year_slider : bool, default True
         If True, includes a slider input for years between 1990 and 2020.
-        If False, disable the slider from sidebar
+        If False, disables the slider from sidebar in favour of a dropdown
+        menu that can be used to limit options to select years.
 
     Returns
     -------
@@ -59,6 +60,15 @@ def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
                 step=5,
                 ticks=True,
                 sep=''
+            )
+        )
+    else:
+        sidebar_elements.append(
+            ui.input_select(
+                f"year_{model_version}",
+                "Year",
+                choices=["2020"],
+                selected=["2020"]
             )
         )
 
