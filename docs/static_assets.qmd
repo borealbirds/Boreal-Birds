@@ -80,3 +80,11 @@ Audio clips are sourced from Xeno-Canto. The app loads up to **5**
 metadata by the leading index of the filename. The player consumes the
 following metadata fields: `recordist`, `country`, `date`, `quality`,
 `license`, and `xeno_canto_url` (falling back to `obs_url`).
+
+## Vignettes - `app/www/vignettes/`
+
+These HTML vignettes corresponding to the BAMexploreR package.
+
+## Styling - `app/www/styles.css`
+
+This file houses all CSS styling applied to the entire app including images, cards, and UI.
