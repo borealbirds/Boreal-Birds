@@ -9,7 +9,7 @@ from shiny import ui
 from shared.data_loading import load_species_metadata
 
 
-def sidebar(model_version: str) -> ui.sidebar:
+def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
     """
     Initialize the standardized filtering sidebar layout for bird model views.
 
@@ -21,6 +21,10 @@ def sidebar(model_version: str) -> ui.sidebar:
     model_version : str
         The version string identifier ('v4' or 'v5') used to namespace 
         the reactive interface components.
+    year_slider : bool, default True
+        If True, includes a slider input for years between 1990 and 2020.
+        If False, disables the slider from sidebar in favour of a dropdown
+        menu that can be used to limit options to select years.
 
     Returns
     -------
@@ -29,7 +33,7 @@ def sidebar(model_version: str) -> ui.sidebar:
     """
     species_choices = sorted(load_species_metadata().get_column("english").to_list())
 
-    return ui.sidebar(
+    sidebar_elements = [
         ui.output_ui(f"sidebar_bird_image_{model_version}"),
         ui.input_select(
             f"species_{model_version}",
@@ -42,15 +46,30 @@ def sidebar(model_version: str) -> ui.sidebar:
             "Region",
             choices=["Canada", "Alaska", "Lower48"],
         ),
-        ui.input_slider(
-            f"year_{model_version}",
-            "Year",
-            min=1990,
-            max=2020,
-            value=2020,
-            step=5,
-            ticks=True,
-            sep=''
-        ),
-        width=375,
-    )
+    ]
+
+    # include year slider if year_slider = True
+    if year_slider:
+        sidebar_elements.append(
+            ui.input_slider(
+                f"year_{model_version}",
+                "Year",
+                min=1990,
+                max=2020,
+                value=2020,
+                step=5,
+                ticks=True,
+                sep=''
+            )
+        )
+    else:
+        sidebar_elements.append(
+            ui.input_select(
+                f"year_{model_version}",
+                "Year",
+                choices=["2020"],
+                selected=["2020"]
+            )
+        )
+
+    return ui.sidebar(*sidebar_elements, width=375)
