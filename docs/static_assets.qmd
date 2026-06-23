@@ -49,7 +49,7 @@ app/www/img/
 **Image metadata fields**
 
 | Field | Type | Description |
-|--------------|--------------|--------------------------------------------|
+|----|----|----|
 | `common_name` | string | English common name |
 | `scientific_name` | string | Scientific name |
 | `sex` | string | `"male"`, `"female"`, or `"unknown"` — drives the ♂/♀ badge |
