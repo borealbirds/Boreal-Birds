@@ -6,7 +6,7 @@ editor:
     wrap: 72
 ---
 
-# Bird Media Structure
+## Bird Media Structure
 
 Bird photos (`img/`) and sounds (`audio/`) are organized into **one
 folder per species**, named `{species_id}_{Common_Name}` (spaces
