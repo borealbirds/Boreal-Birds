@@ -241,7 +241,7 @@ def sound_script(sounds_json: str)-> ui.HTML:
                     if (song.date)      parts.push('<span class="sm-meta-item"><b>Date</b> '     +song.date     +'</span>');
                     if (song.quality)   parts.push('<span class="sm-meta-item"><b>Quality</b> '  +song.quality  +'</span>');
                     if (song.license)   parts.push('<span class="sm-meta-item"><b>License</b> '  +song.license  +'</span>');
-                    if (song.xc_url)    parts.push('<a href="'+song.xc_url+'" target="_blank" class="sm-meta-link">Xeno-Canto ↗</a>');
+                    if (song.xc_url)    parts.push('<a href="'+song.xc_url+'" target="_blank" class="sm-meta-link">'+(song.sourceLabel || 'Source ↗')+'</a>');
                     document.getElementById('sm-meta').innerHTML = parts.join('');
                 }}
 
@@ -255,12 +255,24 @@ def sound_script(sounds_json: str)-> ui.HTML:
                     if (!wsEl || !specEl) continue;
                     if (wsEl._ws) {{ try {{ wsEl._ws.destroy(); }} catch(e) {{}} }}
 
+                    // Metadata line + clickable source link at the end
+                    if (metaEl) {{
+                        const parts = [];
+                        if (song.recordist) parts.push('<span class="sm-meta-item"><b>Recordist</b> '+song.recordist+'</span>');
+                        if (song.country)   parts.push('<span class="sm-meta-item"><b>Location</b> ' +song.country  +'</span>');
+                        if (song.date)      parts.push('<span class="sm-meta-item"><b>Date</b> '     +song.date     +'</span>');
+                        if (song.quality)   parts.push('<span class="sm-meta-item"><b>Quality</b> '  +song.quality  +'</span>');
+                        if (song.license)   parts.push('<span class="sm-meta-item"><b>License</b> '  +song.license  +'</span>');
+                        if (song.xc_url)    parts.push('<a href="'+song.xc_url+'" target="_blank" class="sm-meta-link">'+(song.sourceLabel || 'Source ↗')+'</a>');
+                        metaEl.innerHTML = parts.join('');
+                    }}
+
                     const ws = WaveSurfer.create({{
                         container: wsEl, sampleRate: 44100, waveColor: 'rgba(59,82,139,0.8)',
                         progressColor: '#153B40', cursorColor: '#ff4444', cursorWidth: 2,
                         height: 56, normalize: true,
                         plugins: [Spectrogram.create({{
-                            container: specEl, labels: false, height: 300,
+                            container: specEl, labels: true, height: 300,
                             frequencyMax: 20000, frequencyMin: 0, fftSamples: 2048,
                             scale: 'mel', windowFunc: 'hann', gainDB: 20, rangeDB: 80, colorMap: 'gray', labelsColor: '#000',
                         }})],
