@@ -20,7 +20,7 @@ folder_name = f"{species_id}_{common_name.replace(' ', '_')}"
 App-level layout images (logo, favicon, etc.) live at the top level of
 `img/`, *outside* any species folder.
 
-## Images — `app/www/img/`
+### Images — `app/www/img/`
 
 ```         
 app/www/img/
@@ -65,7 +65,7 @@ app/www/img/
 | `size_kb` | float | Approximate file size in KB |
 | `local_file` | string | The image filename (mirrors the `.jpg` name) |
 
-## Sounds — `app/www/audio/`
+### Sounds — `app/www/audio/`
 
 ```         
 app/www/audio/
@@ -81,10 +81,10 @@ metadata by the leading index of the filename. The player consumes the
 following metadata fields: `recordist`, `country`, `date`, `quality`,
 `license`, and `xeno_canto_url` (falling back to `obs_url`).
 
-## Vignettes - `app/www/vignettes/`
+### Vignettes - `app/www/vignettes/`
 
 These HTML vignettes corresponding to the BAMexploreR package.
 
-## Styling - `app/www/styles.css`
+### Styling - `app/www/styles.css`
 
 This file houses all CSS styling applied to the entire app including images, cards, and UI.

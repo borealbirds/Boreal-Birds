@@ -1,0 +1,16 @@
+{
+  "common_name": "Veery",
+  "scientific_name": "fuscescens",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 81501190,
+  "attribution": "(c) Andrew Block, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/47189437",
+  "obs_date": "2020-05-24",
+  "recorded_by": "conuropsis",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/81501190/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "4_81501190.jpg"
+}

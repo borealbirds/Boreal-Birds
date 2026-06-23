@@ -1,0 +1,16 @@
+{
+  "common_name": "Bank Swallow",
+  "scientific_name": "riparia",
+  "sex": "unknown",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 323055105,
+  "attribution": "(c) Erik Eckstein, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/185021728",
+  "obs_date": "2022-06-04",
+  "recorded_by": "eckerisch",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/323055105/medium.jpg",
+  "size_kb": 150.0,
+  "local_file": "6_323055105.jpg"
+}

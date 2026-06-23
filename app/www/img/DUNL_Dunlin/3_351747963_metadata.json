@@ -1,0 +1,16 @@
+{
+  "common_name": "Dunlin",
+  "scientific_name": "alpina",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 351747963,
+  "attribution": "no rights reserved",
+  "license": "cc0",
+  "obs_url": "https://www.inaturalist.org/observations/199455068",
+  "obs_date": "2024-02-16",
+  "recorded_by": "janowowo",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/351747963/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "3_351747963.jpg"
+}

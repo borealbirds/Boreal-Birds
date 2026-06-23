@@ -1,0 +1,16 @@
+{
+  "common_name": "Spruce Grouse",
+  "scientific_name": "Falcipennis canadensis",
+  "sex": "female",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 442060835,
+  "attribution": "(c) Alexander Shienok, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/247506405",
+  "obs_date": "2024-07-16",
+  "recorded_by": "shienok",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/442060835/medium.jpg",
+  "size_kb": 150.0,
+  "local_file": "3_442060835.jpg"
+}

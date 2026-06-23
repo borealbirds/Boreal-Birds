@@ -1,0 +1,16 @@
+{
+  "common_name": "Veery",
+  "scientific_name": "fuscescens",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 37854203,
+  "attribution": "(c) Ivan Clemente Torres, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/24480732",
+  "obs_date": "2019-04-28",
+  "recorded_by": "conozcayucatan",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/37854203/medium.jpeg",
+  "size_kb": 150.0,
+  "local_file": "2_37854203.jpg"
+}
