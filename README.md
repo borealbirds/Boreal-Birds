@@ -117,7 +117,7 @@ For a more exhaustive list, please see the environment.yml file.
 - Leaflet
 - Conda
 
-## Image and Sound Assets:
+## Image and Sound Assets
 
 Images and sounds were obtained using APIs from conservation sites.
 The images were pulled from iNaturalist using their free API: https://api.inaturalist.org/v1
