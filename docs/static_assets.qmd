@@ -20,6 +20,16 @@ folder_name = f"{species_id}_{common_name.replace(' ', '_')}"
 App-level layout images (logo, favicon, etc.) live at the top level of
 `img/`, *outside* any species folder.
 
+### Asset-Manager-Tool
+
+An asset manager tool can be found at `src/asset_manger.html` which can be run in any 
+Chromium based browser; Chromium, Chrome, Brave, Edge 
+
+This tool will allow admin to search through existing assets, add assets, edit metadata information, delete assets, and set an image as a species' main dashboard image.
+
+If your default browser was already mentioned above, you can just double-click or open the `asset-manager.html` file from the `/src` folder, otherwise right-click and select the preferred available chromium-based browser. 
+
+
 ### Images — `app/www/img/`
 
 ```         
