@@ -1,0 +1,16 @@
+{
+  "common_name": "Alder Flycatcher",
+  "scientific_name": "Empidonax alnorum",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 356075236,
+  "attribution": "(c) Cameron Eckert, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/201694800",
+  "obs_date": "2023-06-12",
+  "recorded_by": "camerondeckert",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/356075236/medium.jpg",
+  "size_kb": 150,
+  "local_file": "07_356075236.jpg"
+}

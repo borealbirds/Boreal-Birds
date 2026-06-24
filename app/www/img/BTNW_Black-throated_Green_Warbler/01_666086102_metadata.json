@@ -1,0 +1,16 @@
+{
+  "common_name": "Black-throated Green Warbler",
+  "scientific_name": "Setophaga virens",
+  "sex": "female",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 666086102,
+  "attribution": "(c) Krystyn Scrbic, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/364856219",
+  "obs_date": "2026-05-23",
+  "recorded_by": "krystyn-s",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/666086102/medium.jpg",
+  "size_kb": 150,
+  "local_file": "01_666086102.jpg"
+}

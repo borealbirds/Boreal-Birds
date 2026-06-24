@@ -1,0 +1,21 @@
+{
+  "bam_common_name": "YBCU Yellow-billed Cuckoo",
+  "bam_scientific_name": "Coccyzus americanus",
+  "xeno_canto_scientific_name": "Coccyzus americanus",
+  "taxonomy_corrected": false,
+  "xeno_canto_recording_id": 901133,
+  "xeno_canto_english_name": "Yellow-billed Cuckoo",
+  "recordist": "David Tattersley",
+  "country": "United States",
+  "location": "Rio Grande City, Starr County, Texas",
+  "date": "2024-04-24",
+  "length": "0:10",
+  "duration_seconds": null,
+  "quality": "A",
+  "type": "nocturnal flight call",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "xeno_canto_url": "https://xeno-canto.org/901133",
+  "audio_url": "https://xeno-canto.org/901133/download",
+  "local_audio_file": "03_901133_qA_0-10.mp3",
+  "selection_mode": "manual add"
+}
