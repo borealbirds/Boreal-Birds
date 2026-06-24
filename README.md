@@ -58,7 +58,7 @@ Download and install Miniconda from:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/UBC-MDS/Boreal-Birds
+git clone https://github.com/borealbirds/Boreal-Birds
 
 cd Boreal-Birds
 ```

@@ -7,7 +7,7 @@ about:
   links:
     - icon: github
       text: GitHub Repository
-      href: https://github.com/UBC-MDS/Boreal-Birds
+      href: https://github.com/borealbirds/Boreal-Birds
 ---
 
 ## First Steps
@@ -15,10 +15,10 @@ about:
 This is a general guideline to deploy the dashboard on to posit connect cloud. We need to deploy 2 apps for the dashboard to be functional:
 
 1. TiTiler API: 
-    - [GitHub Repository](https://github.com/UBC-MDS/MapTiler)
+    - [GitHub Repository](https://github.com/borealbirds/MapTiler)
     - The TiTiler API powers dynamic tiling in the dashboard by converting remote COG rasters into web map tiles on demand. 
 2. Main Dashboard
-    - [GitHub Repository](https://github.com/UBC-MDS/Boreal-Birds/)
+    - [GitHub Repository](https://github.com/borealbirds/Boreal-Birds/)
 
 ### Instructions
 1. Clone/Fork the 2 github repositories above
