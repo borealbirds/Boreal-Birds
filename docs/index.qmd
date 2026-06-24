@@ -7,7 +7,7 @@ about:
   links:
     - icon: github
       text: GitHub Repository
-      href: https://github.com/UBC-MDS/Boreal-Birds
+      href: https://github.com/borealbirds/Boreal-Birds
 ---
 
 ## Quick Start Guide
@@ -19,7 +19,7 @@ Ensure you have the required package manager installed (Conda/Mamba is highly re
 
 1. **Clone the repository and enter the workspace:**
 ```bash
-git clone https://github.com/UBC-MDS/Boreal-Birds.git
+git clone https://github.com/borealbirds/Boreal-Birds.git
 cd Boreal-Birds
 ```
 

@@ -73,7 +73,7 @@ def report_issue() -> ui.nav_control:
     return ui.nav_control(
             ui.a(
                 "Report an Issue",
-                href="https://github.com/UBC-MDS/Boreal-Birds/issues",
+                href="https://github.com/borealbirds/Boreal-Birds/issues",
                 target="_blank",
             ),
         )
