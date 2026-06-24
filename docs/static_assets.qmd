@@ -29,7 +29,7 @@ This tool will allow admin to search through existing assets after setting the r
 
 If your default browser was already mentioned above, you can just double-click or open the `asset_manager.html` file from the `/src` folder, otherwise right-click and select the preferred available chromium-based browser. 
 
-There is expedited addition of assets from the two main sources: iNaturalist and Xeno-Canto, where free APIs can be used. A URL from an asset from these sites can be pasted into the tool and the metadata will auto-populate as well as block duplicates. 
+There is expedited addition of assets from the two main sources: iNaturalist and Xeno-Canto, where free APIs can be used. The URL of an asset from these sites can be pasted into the tool and the metadata will auto-populate as well as block duplicates. 
 
 This tool can be opened in a tab beside the dashboard where admin can effortlessly browse the dashboard assets in one tab, then flip to the asset_manager tool tab to make additions, deletions, or adjustments. 
 
