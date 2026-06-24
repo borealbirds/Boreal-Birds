@@ -1,0 +1,16 @@
+{
+  "common_name": "Golden-crowned Kinglet",
+  "scientific_name": "Regulus satrapa",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 640934207,
+  "attribution": "(c) Kirstyn Eckhardt, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/351238875",
+  "obs_date": "2026-04-18",
+  "recorded_by": "kirstynleighe",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/640934207/medium.jpg",
+  "size_kb": 150,
+  "local_file": "07_640934207.jpg"
+}

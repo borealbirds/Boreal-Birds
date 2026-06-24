@@ -1,0 +1,16 @@
+{
+  "common_name": "Brown-headed Cowbird",
+  "scientific_name": "Molothrus ater",
+  "sex": "female",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 666858245,
+  "attribution": "(c) Aryn Riley, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/365258919",
+  "obs_date": "2026-05-25",
+  "recorded_by": "aryn16949",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/666858245/medium.jpg",
+  "size_kb": 150,
+  "local_file": "01_666858245.jpg"
+}

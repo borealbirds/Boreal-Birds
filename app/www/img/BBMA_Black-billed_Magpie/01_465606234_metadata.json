@@ -1,0 +1,16 @@
+{
+  "common_name": "Black-billed Magpie",
+  "scientific_name": "Pica hudsonia",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 465606234,
+  "attribution": "(c) graysonponti, some rights reserved (CC BY-NC)",
+  "license": "cc-by-nc",
+  "obs_url": "https://www.inaturalist.org/observations/259382418",
+  "obs_date": "2025-01-23",
+  "recorded_by": "graysonponti",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/465606234/medium.jpg",
+  "size_kb": 150,
+  "local_file": "01_465606234.jpg"
+}

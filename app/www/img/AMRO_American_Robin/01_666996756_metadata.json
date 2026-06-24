@@ -1,0 +1,16 @@
+{
+  "common_name": "American Robin",
+  "scientific_name": "Turdus migratorius",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 666996756,
+  "attribution": "(c) bestfern, all rights reserved",
+  "license": null,
+  "obs_url": "https://www.inaturalist.org/observations/365326966",
+  "obs_date": "2026-05-25",
+  "recorded_by": "bestfern",
+  "download_url": "https://static.inaturalist.org/photos/666996756/medium.jpg",
+  "size_kb": 150,
+  "local_file": "01_666996756.jpg"
+}

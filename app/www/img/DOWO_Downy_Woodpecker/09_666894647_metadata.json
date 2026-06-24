@@ -1,0 +1,16 @@
+{
+  "common_name": "Downy Woodpecker",
+  "scientific_name": "Picoides pubescens",
+  "sex": "male",
+  "life_stage": "adult",
+  "captive": false,
+  "photo_id": 666894647,
+  "attribution": "(c) Lisa Meyers McClintick, some rights reserved (CC BY-NC-ND)",
+  "license": "cc-by-nc-nd",
+  "obs_url": "https://www.inaturalist.org/observations/365277840",
+  "obs_date": "2026-05-24",
+  "recorded_by": "lmcclintick",
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/666894647/medium.jpg",
+  "size_kb": 150,
+  "local_file": "09_666894647.jpg"
+}

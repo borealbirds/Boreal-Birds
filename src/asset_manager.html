@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Boreal Birds — Asset Manager</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+  :root[data-theme="light"]{
+    --bg:#e9efed; --panel:#ffffff; --panel-2:#f2f6f5; --border:#d8e1df;
+    --text:#222222; --muted:#5d6f6c; --accent:#0f7279; --accent-ink:#ffffff; --accent-2:#39ab7e; --hl:#edef5d;
+    --danger:#c0392b; --danger-bd:#e7c3bd; --danger-bg:#fbeeec;
+    --male:#245668; --female:#b84d8c; --unknown:#6b7785;
+    --stage:#13262a; --audiofilter:none; --rowhover:#eef3f2; --wavebg:#eef3f2;
+    --shadow:0 4px 12px rgba(0,0,0,.08); --ring:0 0 0 .2rem rgba(15,114,121,.18);
+    --radius-sm:10px; --radius-md:18px; --t:all .2s ease-in-out;
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1c1c; --panel:#15292a; --panel-2:#1b3334; --border:#264446;
+    --text:#e4eeec; --muted:#8ba5a2; --accent:#39ab7e; --accent-ink:#06231c; --accent-2:#6ec574; --hl:#edef5d;
+    --danger:#e0584f; --danger-bd:#3a2326; --danger-bg:#2a1719;
+    --male:#5b9bd5; --female:#d96ba8; --unknown:#8ba5a2;
+    --stage:#0a1414; --audiofilter:invert(.92) hue-rotate(180deg); --rowhover:#1b3334; --wavebg:#10201f;
+    --shadow:0 4px 16px rgba(0,0,0,.38); --ring:0 0 0 .2rem rgba(57,171,126,.22);
+    --radius-sm:10px; --radius-md:18px; --t:all .2s ease-in-out;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Poppins,system-ui,sans-serif;font-size:13px;line-height:1.5}
+  header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border);background:var(--panel);box-shadow:var(--shadow);position:sticky;top:0;z-index:20}
+  header h1{font-size:13px;margin:0 10px 0 0;letter-spacing:1px;color:var(--accent);font-weight:600}
+  .grow{flex:1}
+  button{font-family:inherit;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--panel-2);color:var(--text);padding:7px 13px;border-radius:var(--radius-sm);transition:var(--t)}
+  button:hover{border-color:var(--accent)}
+  button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  button.primary:hover{filter:brightness(1.08)}
+  button.danger{color:var(--danger);border-color:var(--danger-bd);background:transparent}
+  button.danger:hover{background:var(--danger-bg);border-color:var(--danger)}
+  button.solid-danger{background:var(--danger);color:#fff;border-color:var(--danger);font-weight:600}
+  button.ghost{background:transparent}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  input,select,textarea{font-family:inherit;font-size:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:var(--radius-sm);width:100%;transition:var(--t)}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:var(--ring)}
+  label{display:block;color:var(--muted);font-size:10px;margin:0 0 4px;text-transform:uppercase;letter-spacing:.6px;font-weight:500}
+  .field{margin-bottom:9px}
+  .field.req label::after{content:" *";color:var(--danger)}
+  .row{display:flex;gap:9px;flex-wrap:wrap}
+  .row>.field{flex:1;min-width:120px}
+  main{padding:18px;max-width:1180px;margin:0 auto}
+  .pathnote{font-size:11px;color:var(--muted);margin:0 0 16px}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--panel-2);padding:1px 6px;border-radius:6px;color:var(--accent);font-size:11px}
+  #picker{max-width:520px}
+  .scrollwrap{border:1px solid var(--border);border-radius:var(--radius-md);background:var(--panel);overflow:hidden;margin-top:8px;box-shadow:var(--shadow)}
+  .scrolllist{max-height:62vh;overflow:auto}
+  .srow{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;transition:var(--t)}
+  .srow:last-child{border-bottom:none}
+  .srow:hover{background:var(--rowhover)}
+  .srow .sid{color:var(--muted);font-size:11px;min-width:36px}
+  .srow.active{background:var(--rowhover);color:var(--accent);font-weight:600}
+  .wstop{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .wstop .sel{min-width:260px;flex:1}
+  .tabs{display:flex;gap:7px;margin:16px 0}
+  .tabs button.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  .filters{display:flex;gap:7px;align-items:center;margin-bottom:14px}
+  .filters button{padding:5px 14px;border-radius:20px;font-size:11px}
+  .filters button.active{background:var(--panel-2);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+  @media(max-width:860px){.stage{grid-template-columns:1fr}}
+  .viewer{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+  .viewer .stagewrap{position:relative;background:var(--stage);min-height:300px;display:flex;align-items:center;justify-content:center}
+  .viewer img{max-width:100%;max-height:62vh;display:block;cursor:zoom-in}
+  .nav{position:absolute;top:0;bottom:0;width:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:30px;background:linear-gradient(90deg,rgba(0,0,0,.45),transparent);user-select:none;opacity:.5;transition:var(--t)}
+  .nav:hover{opacity:1}
+  .nav.r{right:0;background:linear-gradient(270deg,rgba(0,0,0,.45),transparent)}
+  .nav.l{left:0}
+  .counter{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);padding:3px 12px;border-radius:20px;font-size:11px;color:#fff}
+  .mainbadge{position:absolute;top:10px;left:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:10px;letter-spacing:.5px;padding:4px 10px;border-radius:20px}
+  .sexbadge{position:absolute;top:10px;right:10px;font-size:18px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border:1px solid #fff3}
+  .sexbadge.male{color:var(--male)} .sexbadge.female{color:var(--female)} .sexbadge.unknown{color:var(--unknown)}
+  .viewer .fname{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);padding:9px 14px;word-break:break-all;border-top:1px solid var(--border)}
+  .sndviewer{padding:16px}
+  audio{width:100%;filter:var(--audiofilter)}
+  .waveform{width:100%;height:66px;display:block;margin-top:12px;cursor:pointer;background:var(--wavebg);border-radius:var(--radius-sm)}
+  .editor{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px 18px;box-shadow:var(--shadow)}
+  .editor h3{margin:0 0 13px;font-size:12px;color:var(--accent);letter-spacing:.6px;text-transform:uppercase;font-weight:600}
+  .editor .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px;padding-top:15px;border-top:1px solid var(--border)}
+  .empty{color:var(--muted);text-align:center;padding:60px 20px;border:1px dashed var(--border);border-radius:var(--radius-md)}
+  .pill{font-size:11px;padding:3px 11px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+  .pill.on{color:var(--accent);border-color:var(--accent);background:transparent}
+  .pill.off{color:var(--danger);border-color:var(--danger-bd)}
+  .toast{position:fixed;bottom:18px;right:18px;z-index:80;display:flex;flex-direction:column;gap:8px}
+  .toast div{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 15px;border-radius:var(--radius-sm);font-size:12px;max-width:360px;box-shadow:var(--shadow);animation:sl .2s ease}
+  .toast div.err{border-left-color:var(--danger)}
+  @keyframes sl{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-start;justify-content:center;padding:38px 16px;z-index:50;overflow:auto}
+  .modal{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-md);width:100%;max-width:560px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  .modal h2{margin:0 0 15px;font-size:14px;color:var(--accent);font-weight:600}
+  .cbody{font-size:12.5px;color:var(--text);line-height:1.65;margin-bottom:6px}
+  .cbody b{color:var(--accent)}
+  .importbox{background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px;margin-bottom:14px}
+  .importbox .ititle{font-size:11px;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:9px;font-weight:600}
+  .seg{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px;margin-bottom:10px;gap:3px}
+  .seg button{border:none;background:transparent;padding:5px 16px;border-radius:7px;font-size:11px;color:var(--muted)}
+  .seg button.seg-on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+  .drop{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:22px;text-align:center;color:var(--muted);margin-bottom:14px;transition:var(--t)}
+  .drop.over{border-color:var(--accent);background:var(--panel-2)}
+  .drop .fn{color:var(--accent);word-break:break-all;margin-top:6px}
+  .errlist{color:var(--danger);font-size:11px;margin:0 0 12px;padding-left:16px}
+  .modal .foot{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+  .hint{color:var(--muted);font-size:11px;margin:5px 0 0;line-height:1.5}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:70;cursor:zoom-out;padding:24px}
+  .lightbox img{max-width:96%;max-height:96%;border-radius:var(--radius-sm)}
+  .nosupport{max-width:560px;margin:80px auto;padding:24px;border:1px solid var(--danger);border-radius:var(--radius-md);background:var(--panel)}
+  .nosupport h2{color:var(--danger);margin-top:0}
+</style>
+</head>
+<body>
+
+<div id="nosupport" class="nosupport" style="display:none">
+  <h2>Unsupported browser</h2>
+  <p>This tool uses the <b>File System Access API</b> to read, write and delete asset files directly — no server.</p>
+  <p>Open <code>asset_manager.html</code> in <b>Chrome, Chromium, Brave, or Edge</b>.</p>
+</div>
+
+<div id="app" style="display:none">
+<header>
+  <h1>BOREAL BIRDS · ASSETS</h1>
+  <button id="pickRoot" class="ghost">📁 Open Boreal-Birds/ …</button>
+  <span id="rootPill" class="pill off">repo: —</span>
+  <span class="grow"></span>
+  <button id="themeBtn" class="ghost" title="Toggle light/dark">☀ Light</button>
+  <button id="reload" class="ghost">↻ Rescan</button>
+</header>
+
+<main>
+  <div class="pathnote" id="pathnote"></div>
+
+  <div id="picker">
+    <label>Species — pick one</label>
+    <input id="pickFilter" placeholder="Filter species…" autocomplete="off" />
+    <div class="scrollwrap"><div id="speciesScroll" class="scrolllist"></div></div>
+  </div>
+
+  <div id="workspace" style="display:none">
+    <div class="wstop">
+      <button id="backList" class="ghost">☰ List</button>
+      <div class="sel"><select id="speciesSelect"></select></div>
+    </div>
+    <div class="tabs">
+      <button id="tabImg" class="active">Images (<span id="imgCount">0</span>)</button>
+      <button id="tabSnd">Sounds (<span id="sndCount">0</span>)</button>
+      <span class="grow"></span>
+      <button id="addAsset" class="primary">＋ Add</button>
+    </div>
+    <div id="imgFilters" class="filters">
+      <button data-f="all" class="active">All</button>
+      <button data-f="male">♂ Male</button>
+      <button data-f="female">♀ Female</button>
+    </div>
+    <div id="stage" class="stage"></div>
+  </div>
+
+  <div id="startEmpty" class="empty">
+    Click <b>Open Boreal-Birds/</b> and grant access to your repo root once.
+  </div>
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ════════════ HARDCODED PATHS (relative to the Boreal-Birds repo root) ════════════ */
+const IMG_LEAVES = ["img"];
+const SND_LEAVES = ["sounds","audio"];
+const PREFIX_CANDIDATES = [["app","www"],["www"],["app"],[]];
+const PAD = 2;
+const INAT_OBS_BASE = "https://www.inaturalist.org/observations/";
+const XC_BASE = "https://xeno-canto.org/";
+/* ═══════════════════════════════════════════════════════════════════════════════ */
+
+const IDB="bb_assets",ST="h";
+function idb(){return new Promise((r,j)=>{const q=indexedDB.open(IDB,1);q.onupgradeneeded=()=>q.result.createObjectStore(ST);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error);});}
+async function idbSet(k,v){const d=await idb();return new Promise((r,j)=>{const t=d.transaction(ST,"readwrite");t.objectStore(ST).put(v,k);t.oncomplete=r;t.onerror=()=>j(t.error);});}
+async function idbGet(k){const d=await idb();return new Promise((r,j)=>{const t=d.transaction(ST,"readonly");const q=t.objectStore(ST).get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error);});}
+
+let rootHandle=null, imgRootDir=null, sndRootDir=null;
+let speciesMap=new Map();
+let current=null;
+let tab="img", imgFilter="all", imgIdx=0, sndIdx=0;
+let importExtra={};
+let _actx=null;
+const actx=()=>_actx||(_actx=new (window.AudioContext||window.webkitAudioContext)());
+
+const $=id=>document.getElementById(id);
+const SEX=["male","female","unknown"];
+const LICENSES=["cc0","cc-by","cc-by-sa","cc-by-nc","cc-by-nc-sa","cc-by-nc-nd","cc-by-nd"];
+const SEX_SYM={male:"♂",female:"♀",unknown:"?"};
+const pad=n=>String(n).padStart(PAD,"0");
+
+function toast(m,e=false){const t=$("toast"),d=document.createElement("div");if(e)d.className="err";d.textContent=m;t.appendChild(d);setTimeout(()=>{d.style.opacity="0";setTimeout(()=>d.remove(),250);},e?5200:2400);}
+
+function applyTheme(t){document.documentElement.dataset.theme=t;$("themeBtn").textContent=t==="light"?"☀ Light":"☾ Dark";try{localStorage.setItem("bb_theme",t);}catch(e){}}
+function toggleTheme(){applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light");}
+
+async function ensurePerm(h,write=true){if(!h)return false;const o={mode:write?"readwrite":"read"};if((await h.queryPermission(o))==="granted")return true;return (await h.requestPermission(o))==="granted";}
+
+function confirmModal({title,bodyHtml,okText="Proceed",okClass="primary",cancelText="Cancel"}){
+  return new Promise(res=>{
+    const bg=document.createElement("div");bg.className="modal-bg";
+    bg.innerHTML=`<div class="modal"><h2>${title}</h2><div class="cbody">${bodyHtml}</div>
+      <div class="foot"><button class="ghost" id="c_no">${cancelText}</button><button class="${okClass}" id="c_yes">${okText}</button></div></div>`;
+    document.body.appendChild(bg);
+    const done=v=>{bg.remove();res(v);};
+    bg.querySelector("#c_no").onclick=()=>done(false);
+    bg.querySelector("#c_yes").onclick=()=>done(true);
+    bg.addEventListener("click",e=>{if(e.target===bg)done(false);});
+  });
+}
+
+async function resolveLeaf(root,leaves){
+  for(const pre of PREFIX_CANDIDATES){
+    let base=root,ok=true;
+    for(const seg of pre){try{base=await base.getDirectoryHandle(seg);}catch(e){ok=false;break;}}
+    if(!ok)continue;
+    for(const leaf of leaves){try{const t=await base.getDirectoryHandle(leaf);return {dir:t,path:[...pre,leaf].join("/")};}catch(e){}}
+  }
+  return null;
+}
+async function bindRoot(h){
+  rootHandle=h;
+  const im=await resolveLeaf(h,IMG_LEAVES), sn=await resolveLeaf(h,SND_LEAVES);
+  imgRootDir=im?im.dir:null; sndRootDir=sn?sn.dir:null;
+  $("rootPill").textContent="repo: "+h.name; $("rootPill").className="pill on";
+  $("pathnote").innerHTML=`images → <code>${im?h.name+"/"+im.path:"NOT FOUND"}</code> &nbsp; sounds → <code>${sn?h.name+"/"+sn.path:"NOT FOUND ("+SND_LEAVES.join(" / ")+")"}</code>`;
+  if(!im)toast("Couldn't find an 'img' folder under the picked root.",true);
+  if(!sn)toast("Couldn't find a sounds/audio folder under the picked root.",true);
+}
+
+async function subdirs(root){const o=[];if(!root)return o;for await(const [n,h] of root.entries())if(h.kind==="directory")o.push([n,h]);return o;}
+function naturalCmp(a,b){return a.localeCompare(b,undefined,{numeric:true});}
+function splitSpecies(f){const m=f.match(/^(\d+)_(.+)$/);return m?{id:m[1],name:m[2].replace(/_/g," ")}:{id:"",name:f.replace(/_/g," ")};}
+function prettySpecies(f){const s=splitSpecies(f);return s.id?`[${s.id}] ${s.name}`:s.name;}
+
+async function rescan(){
+  speciesMap=new Map();
+  if(imgRootDir)for(const [n,h] of await subdirs(imgRootDir))speciesMap.set(n,{name:n,img:h,snd:null});
+  if(sndRootDir)for(const [n,h] of await subdirs(sndRootDir)){const c=speciesMap.get(n)||{name:n,img:null,snd:null};c.snd=h;speciesMap.set(n,c);}
+  buildScrollList();buildSelect();
+  toast(`Found ${speciesMap.size} species folder(s).`);
+  $("startEmpty").style.display=speciesMap.size?"none":"block";
+  if(current){const c=speciesMap.get(current.folderName);if(c){current={...c,folderName:current.folderName};await loadSpecies();}}
+}
+function speciesKeysSorted(){return [...speciesMap.keys()].sort(naturalCmp);}
+function buildScrollList(){
+  const list=$("speciesScroll"),filter=($("pickFilter").value||"").toLowerCase();list.innerHTML="";
+  speciesKeysSorted().forEach(n=>{const s=splitSpecies(n);
+    if(filter&&!(s.name.toLowerCase().includes(filter)||s.id.includes(filter)))return;
+    const row=document.createElement("div");row.className="srow"+(current&&current.folderName===n?" active":"");
+    row.innerHTML=`<span class="sid">${s.id?"#"+s.id:""}</span><span>${s.name}</span>`;
+    row.onclick=()=>selectSpecies(n);list.appendChild(row);});
+  if(!list.children.length){const d=document.createElement("div");d.className="srow";d.style.color="var(--muted)";d.textContent=speciesMap.size?"No match.":"No species found — open the repo root.";list.appendChild(d);}
+}
+function buildSelect(){const sel=$("speciesSelect");sel.innerHTML="";const ph=document.createElement("option");ph.value="";ph.textContent="— select species —";sel.appendChild(ph);
+  speciesKeysSorted().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=prettySpecies(n);sel.appendChild(o);});if(current)sel.value=current.folderName;}
+function selectSpecies(folderName){const c=speciesMap.get(folderName);if(!c)return;current={...c,folderName};imgFilter="all";imgIdx=0;sndIdx=0;
+  document.querySelectorAll("#imgFilters button").forEach(b=>b.classList.toggle("active",b.dataset.f==="all"));
+  $("picker").style.display="none";$("startEmpty").style.display="none";$("speciesSelect").value=folderName;loadSpecies();}
+function showPicker(){$("workspace").style.display="none";$("picker").style.display="block";buildScrollList();}
+
+const IMG_EXT=/\.(jpe?g|png|webp)$/i, SND_EXT=/\.(mp3|wav|ogg|m4a|flac)$/i;
+async function readFolder(dir,kind){
+  if(!dir)return [];
+  const metas=[],assets=[];
+  for await(const [n,h] of dir.entries()){if(h.kind!=="file")continue;
+    if(n.endsWith("_metadata.json"))metas.push([n,h]);
+    else if((kind==="img"?IMG_EXT:SND_EXT).test(n))assets.push([n,h]);}
+  const used=new Set(),rows=[];
+  for(const [mn,mh] of metas){
+    const prefix=mn.slice(0,-"_metadata.json".length);
+    const pair=assets.find(([an])=>!used.has(an)&&(an===prefix||an.startsWith(prefix+"_")||an.startsWith(prefix+".")));
+    if(pair)used.add(pair[0]);
+    let meta={};try{meta=JSON.parse(await (await mh.getFile()).text());}catch(e){meta={__err:true};}
+    rows.push({prefix,metaName:mn,metaHandle:mh,meta,assetName:pair?pair[0]:null,assetHandle:pair?pair[1]:null});
+  }
+  for(const [an,ah] of assets){if(used.has(an))continue;rows.push({prefix:an.replace(/\.[^.]+$/,""),metaName:null,metaHandle:null,meta:{__orphan:true},assetName:an,assetHandle:ah});}
+  rows.sort((a,b)=>{const an=a.assetName||a.metaName||a.prefix,bn=b.assetName||b.metaName||b.prefix;return an<bn?-1:an>bn?1:0;});
+  return rows;
+}
+async function loadSpecies(){
+  $("workspace").style.display="block";
+  current._img=await readFolder(current.img,"img");
+  current._snd=await readFolder(current.snd,"snd");
+  $("imgCount").textContent=current._img.length;$("sndCount").textContent=current._snd.length;
+  render();
+}
+function mainAssetName(rows){const n=rows.filter(r=>r.assetName).map(r=>r.assetName);return n.length?n.slice().sort((a,b)=>a<b?-1:1)[0]:null;}
+function filteredImgRows(){const rows=current._img;return imgFilter==="all"?rows:rows.filter(r=>(r.meta.sex||"unknown")===imgFilter);}
+
+function render(){
+  $("tabImg").classList.toggle("active",tab==="img");$("tabSnd").classList.toggle("active",tab==="snd");
+  $("imgFilters").style.display=tab==="img"?"flex":"none";
+  tab==="img"?renderImg():renderSnd();
+}
+function renderImg(){
+  const stage=$("stage"),rows=filteredImgRows();
+  if(!rows.length){stage.innerHTML=`<div class="empty">No images in this filter. Use “Add”.</div>`;return;}
+  if(imgIdx>=rows.length)imgIdx=0;
+  const r=rows[imgIdx],mainName=mainAssetName(current._img),sex=r.meta.sex||"unknown";
+  stage.innerHTML="";
+  const v=document.createElement("div");v.className="viewer";
+  const sw=document.createElement("div");sw.className="stagewrap";
+  const img=document.createElement("img");
+  if(r.assetHandle)r.assetHandle.getFile().then(f=>img.src=URL.createObjectURL(f));
+  img.onclick=()=>lightbox(img.src);sw.appendChild(img);
+  sw.insertAdjacentHTML("beforeend",(r.assetName===mainName?`<div class="mainbadge">★ MAIN</div>`:"")+`<div class="sexbadge ${sex}">${SEX_SYM[sex]||"?"}</div>`+`<div class="counter">${imgIdx+1} / ${rows.length}</div>`);
+  const l=document.createElement("div");l.className="nav l";l.textContent="‹";l.onclick=()=>{imgIdx=(imgIdx-1+rows.length)%rows.length;renderImg();};
+  const rt=document.createElement("div");rt.className="nav r";rt.textContent="›";rt.onclick=()=>{imgIdx=(imgIdx+1)%rows.length;renderImg();};
+  sw.appendChild(l);sw.appendChild(rt);v.appendChild(sw);
+  const fn=document.createElement("div");fn.className="fname";fn.textContent=r.assetName||"(no file)";v.appendChild(fn);
+  stage.appendChild(v);stage.appendChild(imgEditor(r,r.assetName===mainName));
+}
+function imgEditor(r,isMain){
+  const m=r.meta||{},e=document.createElement("div");e.className="editor";e.innerHTML="<h3>Edit image metadata</h3>";
+  e.appendChild(inp("Common name","common_name",m.common_name));
+  e.appendChild(inp("Scientific name","scientific_name",m.scientific_name));
+  e.appendChild(rowOf([sel("Sex","sex",m.sex||"unknown",SEX),inp("Photo ID","photo_id",m.photo_id)]));
+  e.appendChild(rowOf([free("License","license",m.license,LICENSES),inp("Life stage","life_stage",m.life_stage??"adult")]));
+  e.appendChild(inp("Attribution","attribution",m.attribution));
+  e.appendChild(inp("Observation URL","obs_url",m.obs_url,{url:1}));
+  e.appendChild(rowOf([inp("Obs date","obs_date",m.obs_date),inp("Recorded by","recorded_by",m.recorded_by)]));
+  e.appendChild(inp("Download URL","download_url",m.download_url,{url:1}));
+  e.appendChild(rowOf([inp("Size KB","size_kb",m.size_kb),free("Captive","captive",String(m.captive??false),["false","true"])]));
+  const act=document.createElement("div");act.className="actions";
+  act.appendChild(mk("💾 Save","primary",()=>saveImg(e,r)));
+  if(!isMain&&r.assetHandle)act.appendChild(mk("★ Set as main","",()=>setMain(r)));
+  act.appendChild(mk("🗑 Delete","danger",()=>delAsset(r,"img")));
+  e.appendChild(act);return e;
+}
+function renderSnd(){
+  const stage=$("stage"),rows=current._snd;
+  if(!rows.length){stage.innerHTML=`<div class="empty">No sounds in this species. Use “Add”.</div>`;return;}
+  if(sndIdx>=rows.length)sndIdx=0;
+  const r=rows[sndIdx];stage.innerHTML="";
+  const v=document.createElement("div");v.className="viewer";
+  const sv=document.createElement("div");sv.className="sndviewer";
+  const head=document.createElement("div");head.style.cssText="display:flex;align-items:center;gap:10px;margin-bottom:10px";
+  head.innerHTML=`<button class="ghost" ${rows.length<2?"disabled":""} id="sprev">‹</button>
+    <span style="flex:1;text-align:center;color:var(--muted);font-size:11px">Sound ${sndIdx+1} / ${rows.length}${sndIdx>4?'  ·  (dashboard shows first 5 only)':''}</span>
+    <button class="ghost" ${rows.length<2?"disabled":""} id="snext">›</button>`;
+  sv.appendChild(head);
+  const au=document.createElement("audio");au.controls=true;au.preload="metadata";sv.appendChild(au);
+  const canvas=document.createElement("canvas");canvas.className="waveform";sv.appendChild(canvas);
+  const fn=document.createElement("div");fn.className="fname";fn.style.borderTop="none";fn.style.padding="9px 0 0";fn.textContent=r.assetName||"(no file)";sv.appendChild(fn);
+  v.appendChild(sv);stage.appendChild(v);
+  if(r.assetHandle)r.assetHandle.getFile().then(f=>{au.src=URL.createObjectURL(f);setupWave(canvas,au,f);});
+  head.querySelector("#sprev").onclick=()=>{sndIdx=(sndIdx-1+rows.length)%rows.length;renderSnd();};
+  head.querySelector("#snext").onclick=()=>{sndIdx=(sndIdx+1)%rows.length;renderSnd();};
+  stage.appendChild(sndEditor(r));
+}
+function sndEditor(r){
+  const m=r.meta||{},e=document.createElement("div");e.className="editor";e.innerHTML="<h3>Edit sound metadata</h3>";
+  e.appendChild(inp("Common name","bam_common_name",m.bam_common_name));
+  e.appendChild(inp("BAM scientific","bam_scientific_name",m.bam_scientific_name));
+  e.appendChild(inp("XC scientific","xeno_canto_scientific_name",m.xeno_canto_scientific_name));
+  e.appendChild(rowOf([inp("Recording ID","xeno_canto_recording_id",m.xeno_canto_recording_id),inp("English name","xeno_canto_english_name",m.xeno_canto_english_name)]));
+  e.appendChild(inp("Recordist","recordist",m.recordist));
+  e.appendChild(rowOf([inp("Country","country",m.country),inp("Date","date",m.date)]));
+  e.appendChild(inp("Location","location",m.location));
+  e.appendChild(rowOf([inp("Length","length",m.length),inp("Duration (s)","duration_seconds",m.duration_seconds),inp("Quality","quality",m.quality)]));
+  e.appendChild(rowOf([inp("Type","type",m.type??"song"),free("License","license",m.license,LICENSES)]));
+  e.appendChild(inp("XC URL","xeno_canto_url",m.xeno_canto_url,{url:1}));
+  e.appendChild(inp("Audio URL","audio_url",m.audio_url,{url:1}));
+  e.appendChild(inp("Selection mode","selection_mode",m.selection_mode));
+  const act=document.createElement("div");act.className="actions";
+  act.appendChild(mk("💾 Save","primary",()=>saveSnd(e,r)));
+  act.appendChild(mk("🗑 Delete","danger",()=>delAsset(r,"snd")));
+  e.appendChild(act);return e;
+}
+
+async function setupWave(canvas,au,file){
+  let peaks=null,dur=0;
+  const cssVar=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  try{
+    const buf=await file.arrayBuffer();
+    const ab=await actx().decodeAudioData(buf.slice(0));
+    dur=ab.duration;const ch=ab.getChannelData(0);
+    const dpr=window.devicePixelRatio||1, cssW=canvas.clientWidth||600, cssH=66;
+    canvas.width=Math.max(1,Math.floor(cssW*dpr));canvas.height=Math.floor(cssH*dpr);
+    const bars=Math.max(40,Math.floor(cssW/3)), block=Math.floor(ch.length/bars)||1;
+    peaks=new Float32Array(bars);
+    for(let i=0;i<bars;i++){let mx=0;const s=i*block,end=Math.min(s+block,ch.length);
+      for(let j=s;j<end;j+=Math.max(1,Math.floor(block/64))){const a=Math.abs(ch[j]);if(a>mx)mx=a;}peaks[i]=mx;}
+    const norm=Math.max(...peaks)||1;for(let i=0;i<bars;i++)peaks[i]/=norm;
+  }catch(e){canvas.style.display="none";return;}
+  const ctx=canvas.getContext("2d");
+  function draw(progress){
+    const dpr=window.devicePixelRatio||1,W=canvas.width,H=canvas.height,bars=peaks.length,bw=W/bars,gap=Math.max(1,bw*0.35);
+    const accent=cssVar("--accent")||"#0f7279", muted=cssVar("--muted")||"#888";
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<bars;i++){const h=Math.max(2*dpr,peaks[i]*(H*0.92)),x=i*bw,y=(H-h)/2;
+      ctx.fillStyle=(i/bars)<progress?accent:muted;ctx.globalAlpha=(i/bars)<progress?1:0.4;
+      ctx.fillRect(x+gap/2,y,Math.max(1,bw-gap),h);}
+    ctx.globalAlpha=1;
+  }
+  draw(0);
+  const prog=()=>{const d=au.duration||dur;return d?au.currentTime/d:0;};
+  au.addEventListener("timeupdate",()=>draw(prog()));
+  au.addEventListener("seeked",()=>draw(prog()));
+  au.addEventListener("play",()=>draw(prog()));
+  au.addEventListener("ended",()=>draw(1));
+  canvas.addEventListener("click",e=>{const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width;const d=au.duration||dur;if(d){au.currentTime=Math.max(0,Math.min(d,x*d));draw(x);}});
+}
+
+function inp(l,k,v,o={}){const d=document.createElement("div");d.className="field";d.innerHTML=`<label>${l}</label>`;const i=document.createElement("input");i.value=v??"";i.dataset.key=k;if(o.url)i.placeholder="https://…";d.appendChild(i);return d;}
+function sel(l,k,v,opt){const d=document.createElement("div");d.className="field";d.innerHTML=`<label>${l}</label>`;const s=document.createElement("select");s.dataset.key=k;opt.forEach(o=>{const op=document.createElement("option");op.value=o;op.textContent=o;if(o===v)op.selected=true;s.appendChild(op);});d.appendChild(s);return d;}
+function free(l,k,v,opt){const d=document.createElement("div");d.className="field";d.innerHTML=`<label>${l}</label>`;const i=document.createElement("input");i.value=v??"";i.dataset.key=k;i.setAttribute("list","dl_"+k);const dl=document.createElement("datalist");dl.id="dl_"+k;opt.forEach(o=>{const op=document.createElement("option");op.value=o;dl.appendChild(op);});d.appendChild(i);d.appendChild(dl);return d;}
+function rowOf(f){const r=document.createElement("div");r.className="row";f.forEach(x=>r.appendChild(x));return r;}
+function mk(t,c,fn){const b=document.createElement("button");b.textContent=t;if(c)b.className=c;b.onclick=fn;return b;}
+function collect(el){const o={};el.querySelectorAll("[data-key]").forEach(x=>o[x.dataset.key]=x.value);return o;}
+function setFormFields(form,obj){Object.entries(obj).forEach(([k,v])=>{const el=form.querySelector(`[data-key="${k}"]`);if(el!=null&&v!=null)el.value=v;});}
+function numOrStr(x){if(x===""||x==null)return x;return /^\d+$/.test(String(x))?Number(x):x;}
+function coerceImg(v){return{common_name:v.common_name,scientific_name:v.scientific_name,sex:v.sex,life_stage:v.life_stage,captive:v.captive==="true",photo_id:numOrStr(v.photo_id),attribution:v.attribution,license:v.license,obs_url:v.obs_url,obs_date:v.obs_date,recorded_by:v.recorded_by,download_url:v.download_url,size_kb:v.size_kb===""?"":Number(v.size_kb),local_file:null};}
+function coerceSnd(v,extra={}){return{bam_common_name:v.bam_common_name,bam_scientific_name:v.bam_scientific_name,xeno_canto_scientific_name:v.xeno_canto_scientific_name,taxonomy_corrected:extra.taxonomy_corrected??false,xeno_canto_recording_id:numOrStr(v.xeno_canto_recording_id),xeno_canto_english_name:v.xeno_canto_english_name,recordist:v.recordist,country:v.country,location:v.location,date:v.date,length:v.length,duration_seconds:v.duration_seconds===""?null:Number(v.duration_seconds),quality:v.quality,type:v.type,license:v.license,xeno_canto_url:v.xeno_canto_url,audio_url:v.audio_url,local_audio_file:null,selection_mode:v.selection_mode};}
+
+async function writeJSON(dir,name,obj){const fh=await dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(obj,null,2));await w.close();}
+async function writeBytes(dir,name,buf){const fh=await dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(buf);await w.close();}
+async function copyFile(dir,fromH,toName){await writeBytes(dir,toName,await (await fromH.getFile()).arrayBuffer());}
+async function rm(dir,name){if(!name)return;try{await dir.removeEntry(name);}catch(e){}}
+
+async function saveImg(el,r){if(!await ensurePerm(current.img))return toast("Permission denied.",true);const v=collect(el),o=coerceImg(v);o.local_file=r.assetName||r.meta.local_file||"";try{await writeJSON(current.img,r.metaName||`${r.prefix}_metadata.json`,o);toast("Saved.");await loadSpecies();}catch(e){toast("Save failed: "+e.message,true);}}
+async function saveSnd(el,r){if(!await ensurePerm(current.snd))return toast("Permission denied.",true);const v=collect(el),o=coerceSnd(v,{taxonomy_corrected:r.meta.taxonomy_corrected??false});o.local_audio_file=r.assetName||r.meta.local_audio_file||"";if(r.meta.inat_url)o.inat_url=r.meta.inat_url;if(r.meta.source)o.source=r.meta.source;try{await writeJSON(current.snd,r.metaName||`${r.prefix}_metadata.json`,o);toast("Saved.");await loadSpecies();}catch(e){toast("Save failed: "+e.message,true);}}
+
+async function delAsset(r,kind){
+  const dir=kind==="img"?current.img:current.snd;
+  const ok=await confirmModal({title:"Delete asset?",bodyHtml:`This permanently removes the file and its metadata sidecar from disk:<br><br>• <code>${r.assetName||"(no asset file)"}</code><br>• <code>${r.metaName||"(no metadata)"}</code><br><br>This cannot be undone.`,okText:"Delete",okClass:"solid-danger"});
+  if(!ok)return;
+  if(!await ensurePerm(dir))return toast("Permission denied.",true);
+  try{await rm(dir,r.assetName);await rm(dir,r.metaName);toast("Deleted.");await loadSpecies();}catch(e){toast("Delete failed: "+e.message,true);}
+}
+
+async function setMain(target){
+  const dir=current.img;
+  const ok=await confirmModal({title:"Set as main photo?",bodyHtml:`The dashboard picks a species’ main/profile photo by <b>filename order</b> — it shows whichever <code>.jpg</code> sorts first.<br><br>To make <b>this</b> photo first, the tool will <b>renumber every photo</b> in this species’ folder with zero-padded indices (<code>01_…</code>, <code>02_…</code>, …) and place this one at <code>01_</code>. Zero-padding makes alphabetical order match numeric order, so <code>01_</code> is reliably first (otherwise <code>10_</code> sorts before <code>1_</code>).<br><br>Each photo’s <code>.jpg</code> and its <code>_metadata.json</code> are renamed and the <code>local_file</code> field updated. Nothing is deleted.`,okText:"Renumber & set main",okClass:"primary"});
+  if(!ok)return;
+  if(!await ensurePerm(dir))return toast("Permission denied.",true);
+  const rest=current._img.filter(r=>r.prefix!==target.prefix),order=[target,...rest];
+  try{
+    const olds=[];
+    for(let i=0;i<order.length;i++){
+      const r=order[i];if(!r.assetHandle)continue;
+      const pid=r.meta.photo_id ?? extractPid(r.assetName);
+      const ext=(r.assetName.match(/\.[^.]+$/)||[".jpg"])[0];
+      const newAsset=`${pad(i+1)}_${pid}${ext}`,newMeta=`${pad(i+1)}_${pid}_metadata.json`;
+      if(newAsset!==r.assetName)await copyFile(dir,r.assetHandle,newAsset);
+      const meta={...r.meta};meta.local_file=newAsset;await writeJSON(dir,newMeta,meta);
+      olds.push([r.assetName!==newAsset?r.assetName:null,r.metaName&&r.metaName!==newMeta?r.metaName:null]);
+    }
+    for(const [a,m] of olds){await rm(dir,a);await rm(dir,m);}
+    toast("Set as main · folder renumbered "+pad(1)+"…");imgIdx=0;await loadSpecies();
+  }catch(e){toast("Set-main failed: "+e.message,true);}
+}
+function extractPid(n){const m=n&&n.match(/^\d+_(\d+)/);return m?Number(m[1]):"";}
+
+/* ════════════ IMPORT (iNaturalist + Xeno-Canto) ════════════ */
+function parseSource(url){
+  try{const u=new URL(url);const h=u.hostname.replace(/^www\./,"");
+    if(h.includes("inaturalist.org")){const m=u.pathname.match(/observations\/(\d+)/);if(m)return{source:"inat",id:m[1]};}
+    if(h.includes("xeno-canto.org")){const m=u.pathname.match(/(\d{3,})/);if(m)return{source:"xc",id:m[1]};}
+  }catch(e){}
+  return null;
+}
+const fixProto=u=>u&&u.startsWith("//")?"https:"+u:u;
+async function fetchAsFile(url,name,type){const res=await fetch(fixProto(url));if(!res.ok)throw new Error("HTTP "+res.status);const blob=await res.blob();return new File([blob],name,{type:type||blob.type||"application/octet-stream"});}
+async function fetchInatObs(id){const r=await fetch(`https://api.inaturalist.org/v1/observations/${id}`);if(!r.ok)throw new Error("iNat HTTP "+r.status);const j=await r.json();const o=j.results&&j.results[0];if(!o)throw new Error("Observation not found.");return o;}
+function inatSex(o){for(const a of (o.annotations||[])){if(a.controlled_attribute_id===9){if(a.controlled_value_id===10)return"female";if(a.controlled_value_id===11)return"male";}}return"unknown";}
+function buildInatImageMeta(o,folderCommon){
+  const p=(o.photos&&o.photos[0])||(o.observation_photos&&o.observation_photos[0]&&o.observation_photos[0].photo);
+  if(!p)throw new Error("No photo on that observation.");
+  const medium=(p.url||"").replace("square","medium");
+  return {meta:{common_name:(o.taxon&&o.taxon.preferred_common_name)||folderCommon,scientific_name:(o.taxon&&o.taxon.name)||"",sex:inatSex(o),photo_id:p.id,attribution:p.attribution||"",license:p.license_code||"",obs_url:`https://www.inaturalist.org/observations/${o.id}`,obs_date:o.observed_on||(o.observed_on_details&&o.observed_on_details.date)||"",recorded_by:(o.user&&o.user.login)||"",download_url:medium,life_stage:"adult"},fileUrl:medium,fileName:`${p.id}.jpg`};
+}
+function buildInatSoundMeta(o,folderCommon){
+  const s=o.sounds&&o.sounds[0];if(!s)throw new Error("No sound on that observation.");
+  const sci=(o.taxon&&o.taxon.name)||"",cn=(o.taxon&&o.taxon.preferred_common_name)||folderCommon;
+  return {meta:{bam_common_name:cn,bam_scientific_name:sci,xeno_canto_scientific_name:sci,xeno_canto_recording_id:s.id,xeno_canto_english_name:cn,recordist:(o.user&&o.user.login)||"",country:o.place_guess||"",date:o.observed_on||"",length:"",quality:"iNat",type:"song",license:s.license_code||"",xeno_canto_url:"",audio_url:s.file_url||""},extra:{inat_url:`https://www.inaturalist.org/observations/${o.id}`,source:"iNaturalist",taxonomy_corrected:false},fileUrl:s.file_url,fileName:`inat_${s.id}.mp3`};
+}
+async function fetchXcRec(id,key){const r=await fetch(`https://xeno-canto.org/api/3/recordings?query=nr:${id}&key=${encodeURIComponent(key)}`);if(!r.ok)throw new Error("XC HTTP "+r.status);const j=await r.json();const rec=j.recordings&&j.recordings[0];if(!rec)throw new Error("Recording not found (check id / key).");return rec;}
+function buildXcMeta(rec,folderCommon){
+  return {meta:{bam_common_name:folderCommon,bam_scientific_name:`${rec.gen} ${rec.sp}`,xeno_canto_scientific_name:`${rec.gen} ${rec.sp}`,xeno_canto_recording_id:rec.id,xeno_canto_english_name:rec.en||"",recordist:rec.rec||"",country:rec.cnt||"",location:rec.loc||"",date:rec.date||"",length:rec.length||"",quality:rec.q||"",type:rec.type||"song",license:fixProto(rec.lic)||"",xeno_canto_url:`https://xeno-canto.org/${rec.id}`,audio_url:fixProto(rec.file)||""},fileUrl:rec.file,fileName:`${rec.id}.mp3`};
+}
+
+let pendingFile=null;
+function openAdd(){
+  if(!current)return toast("Pick a species first.",true);
+  const isImg=tab==="img",dir=isImg?current.img:current.snd;
+  if(!dir)return toast(`This species has no ${isImg?"image":"sound"} folder under the root.`,true);
+  importExtra={};
+  let savedKey="";try{savedKey=sessionStorage.getItem("xc_key")||"";}catch(e){}
+  const bg=document.createElement("div");bg.className="modal-bg";
+  const importInner = isImg
+    ? `<div class="ititle">⚡ Import from iNaturalist</div>
+       <div class="row" style="margin-bottom:8px"><input id="impUrl" value="${INAT_OBS_BASE}"><button id="impBtn" style="white-space:nowrap">Import</button></div>
+       <p class="hint">Add the observation number to the end, e.g. <code>${INAT_OBS_BASE}27400929</code>. Photo + metadata auto-fill.</p>`
+    : `<div class="ititle">⚡ Expedited import</div>
+       <div class="seg"><button id="segInat" class="seg-on" type="button">iNaturalist</button><button id="segXc" type="button">Xeno-Canto</button></div>
+       <div class="row" style="margin-bottom:8px"><input id="impUrl" value="${INAT_OBS_BASE}"><button id="impBtn" style="white-space:nowrap">Import</button></div>
+       <div class="row" id="keyrow" style="display:none;margin-bottom:8px"><input id="xcKey" placeholder="Xeno-Canto API key" value="${savedKey.replace(/"/g,'&quot;')}"><button id="xcSave" style="white-space:nowrap">Save</button></div>
+       <p class="hint" id="imphint">Add the observation number, e.g. <code>${INAT_OBS_BASE}27400929</code>. File + metadata auto-fill.</p>`;
+  bg.innerHTML=`<div class="modal"><h2>Add ${isImg?"image":"sound"} → ${prettySpecies(current.folderName)}</h2>
+    <div class="importbox">${importInner}</div>
+    <div class="drop" id="drop">Drag a file here, or <button id="browse" class="ghost" style="display:inline-block">browse…</button><div class="fn" id="fn"></div></div>
+    <ul class="errlist" id="errs" style="display:none"></ul><div id="form"></div>
+    <div class="foot"><button class="ghost" id="cancel">Cancel</button><button class="primary" id="ok">Add asset</button></div></div>`;
+  document.body.appendChild(bg);
+  const form=bg.querySelector("#form");isImg?imgForm(form):sndForm(form);
+  const drop=bg.querySelector("#drop"),fn=bg.querySelector("#fn");
+  function computeLengthInto(file){const url=URL.createObjectURL(file);const a=new Audio();a.preload="metadata";a.src=url;a.onloadedmetadata=()=>{const d=Math.round(a.duration);if(!isFinite(d))return;const len=`${Math.floor(d/60)}:${String(d%60).padStart(2,"0")}`;const lf=form.querySelector('[data-key="length"]');if(lf&&!lf.value)lf.value=len;const df=form.querySelector('[data-key="duration_seconds"]');if(df&&!df.value)df.value=d;};}
+  const setFile=f=>{pendingFile=f;fn.textContent=f?`✓ ${f.name} (${Math.round(f.size/1024)} KB)`:"";if(f){if(isImg){const s=form.querySelector('[data-key="size_kb"]');if(s&&!s.value)s.value=(f.size/1024).toFixed(1);}else{computeLengthInto(f);}}};
+  drop.ondragover=e=>{e.preventDefault();drop.classList.add("over");};
+  drop.ondragleave=()=>drop.classList.remove("over");
+  drop.ondrop=e=>{e.preventDefault();drop.classList.remove("over");const f=e.dataTransfer.files[0];if(f)setFile(f);};
+  bg.querySelector("#browse").onclick=async()=>{try{const [h]=await window.showOpenFilePicker({types:[{description:isImg?"Images":"Audio",accept:isImg?{"image/*":[".jpg",".jpeg",".png",".webp"]}:{"audio/*":[".mp3",".wav",".ogg",".m4a"]}}]});setFile(await h.getFile());}catch(e){}};
+
+  if(!isImg){
+    const segInat=bg.querySelector("#segInat"),segXc=bg.querySelector("#segXc"),keyrow=bg.querySelector("#keyrow"),imphint=bg.querySelector("#imphint"),impUrlEl=bg.querySelector("#impUrl");
+    function setMode(mode){
+      if(mode==="xc"){segXc.classList.add("seg-on");segInat.classList.remove("seg-on");keyrow.style.display="flex";impUrlEl.value=XC_BASE;imphint.innerHTML=`Add the recording number, e.g. <code>${XC_BASE}373885</code>. Uses your API key.`;}
+      else{segInat.classList.add("seg-on");segXc.classList.remove("seg-on");keyrow.style.display="none";impUrlEl.value=INAT_OBS_BASE;imphint.innerHTML=`Add the observation number, e.g. <code>${INAT_OBS_BASE}27400929</code>. File + metadata auto-fill.`;}
+    }
+    segInat.onclick=()=>setMode("inat");segXc.onclick=()=>setMode("xc");
+    bg.querySelector("#xcSave").onclick=()=>{const k=(bg.querySelector("#xcKey").value||"").trim();try{sessionStorage.setItem("xc_key",k);}catch(e){}toast(k?"XC API key saved for this session.":"XC API key cleared.");};
+  }
+
+  bg.querySelector("#impBtn").onclick=async()=>{
+    const btn=bg.querySelector("#impBtn"),url=bg.querySelector("#impUrl").value.trim();
+    const src=parseSource(url);
+    if(!src)return toast("Add the observation/recording number to the URL first.",true);
+    importExtra={};
+    const folderCommon=splitSpecies(current.folderName).name;
+    btn.disabled=true;btn.textContent="Importing…";
+    try{
+      if(src.source==="inat"){
+        const obs=await fetchInatObs(src.id);
+        if(isImg){const {meta,fileUrl,fileName}=buildInatImageMeta(obs,folderCommon);setFormFields(form,meta);
+          try{setFile(await fetchAsFile(fileUrl,fileName,"image/jpeg"));toast("Imported iNat photo + metadata.");}
+          catch(e){toast("Metadata filled — image download blocked, drop the file.",true);}}
+        else{const {meta,extra,fileUrl,fileName}=buildInatSoundMeta(obs,folderCommon);setFormFields(form,meta);importExtra=extra;
+          try{setFile(await fetchAsFile(fileUrl,fileName,"audio/mpeg"));toast("Imported iNat sound + metadata.");}
+          catch(e){toast("Metadata filled — audio download blocked, drop the file.",true);}}
+      }else{
+        if(isImg)throw new Error("Xeno-Canto is audio only — use the Sounds tab.");
+        const key=((bg.querySelector("#xcKey")||{}).value||"").trim();
+        if(!key)throw new Error("Enter your Xeno-Canto API key, then Save.");
+        const rec=await fetchXcRec(src.id,key);const {meta,fileUrl,fileName}=buildXcMeta(rec,folderCommon);setFormFields(form,meta);
+        try{setFile(await fetchAsFile(fileUrl,fileName,"audio/mpeg"));toast("Imported XC sound + metadata.");}
+        catch(e){toast("Metadata filled — XC blocked the audio (CORS), drop the mp3.",true);}
+      }
+    }catch(e){toast("Import failed: "+e.message,true);}
+    finally{btn.disabled=false;btn.textContent="Import";}
+  };
+  bg.querySelector("#cancel").onclick=()=>bg.remove();
+  bg.querySelector("#ok").onclick=()=>isImg?addImg(bg,form,dir):addSnd(bg,form,dir);
+}
+function imgForm(f){
+  const cn=splitSpecies(current.folderName).name;
+  f.appendChild(req("Common name","common_name",cn));
+  f.appendChild(req("Scientific name","scientific_name",""));
+  f.appendChild(rowOf([reqsel("Sex","sex","unknown",SEX),req("Photo ID (iNat)","photo_id","")]));
+  f.appendChild(rowOf([req("Attribution","attribution",""),reqfree("License","license","cc-by-nc",LICENSES)]));
+  f.appendChild(req("Observation URL (link)","obs_url","",{url:1}));
+  f.appendChild(rowOf([req("Obs date","obs_date",""),req("Recorded by","recorded_by","")]));
+  f.appendChild(req("Download URL (link)","download_url","",{url:1}));
+  f.appendChild(rowOf([inp("Life stage","life_stage","adult"),inp("Size KB","size_kb","")]));
+  f.insertAdjacentHTML("beforeend",`<p class="hint">Saved as <b>NN_{photo_id}.jpg</b> (next index, zero-padded).</p>`);
+}
+function sndForm(f){
+  const cn=splitSpecies(current.folderName).name;
+  f.appendChild(req("Common name","bam_common_name",cn));
+  f.appendChild(req("BAM scientific","bam_scientific_name",""));
+  f.appendChild(req("XC scientific","xeno_canto_scientific_name",""));
+  f.appendChild(rowOf([req("Recording ID","xeno_canto_recording_id",""),req("English name","xeno_canto_english_name",cn)]));
+  f.appendChild(req("Recordist","recordist",""));
+  f.appendChild(rowOf([req("Country","country",""),req("Date","date","")]));
+  f.appendChild(inp("Location","location",""));
+  f.appendChild(rowOf([inp("Length (M:SS)","length",""),inp("Quality","quality","")]));
+  f.appendChild(rowOf([inp("Type","type","song"),reqfree("License","license","",LICENSES)]));
+  f.appendChild(req("XC URL (link)","xeno_canto_url","",{url:1}));
+  f.appendChild(req("Audio URL (link)","audio_url","",{url:1}));
+  f.appendChild(inp("Selection mode","selection_mode","manual add"));
+  f.insertAdjacentHTML("beforeend",`<p class="hint">Length & quality auto-fill from the file/import. Saved as <b>NN_{rec_id}_q{quality}_{length}.mp3</b>.</p>`);
+}
+function req(l,k,v,o={}){const f=inp(l,k,v,o);f.classList.add("req");f.dataset.req="1";if(o.url)f.dataset.url="1";return f;}
+function reqsel(l,k,v,o){const f=sel(l,k,v,o);f.classList.add("req");return f;}
+function reqfree(l,k,v,o){const f=free(l,k,v,o);f.classList.add("req");f.dataset.req="1";return f;}
+function validate(form){const errs=[];if(!pendingFile)errs.push("No file selected — import or drop one.");form.querySelectorAll(".field").forEach(f=>{const el=f.querySelector("[data-key]");if(!el)return;const lab=f.querySelector("label").textContent.replace(" *","");if(f.dataset.req==="1"&&!String(el.value).trim())errs.push(`“${lab}” is required.`);if(f.dataset.url==="1"&&el.value.trim()&&!/^https?:\/\//i.test(el.value.trim()))errs.push(`“${lab}” must be a URL.`);});return errs;}
+function showErrs(bg,errs){const ul=bg.querySelector("#errs");if(!errs.length){ul.style.display="none";return false;}ul.style.display="block";ul.innerHTML=errs.map(e=>`<li>${e}</li>`).join("");return true;}
+function nextIdx(rows){let mx=0;(rows||[]).forEach(r=>{const n=parseInt(r.prefix.split("_")[0],10);if(!isNaN(n))mx=Math.max(mx,n);});return mx+1;}
+async function addImg(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._img),pid=String(v.photo_id).trim();const fname=`${pad(i)}_${pid}.jpg`,o=coerceImg(v);o.local_file=fname;if(o.size_kb===""||o.size_kb==null)o.size_kb=Number((pendingFile.size/1024).toFixed(1));try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${pid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
+async function addSnd(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._snd),rid=String(v.xeno_canto_recording_id).trim();const q=(v.quality||"").trim(),safeLen=String(v.length||"").replace(/:/g,"-");const fname=`${pad(i)}_${rid}_q${q}_${safeLen}.mp3`;const o=coerceSnd(v);Object.assign(o,importExtra);o.local_audio_file=fname;try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${rid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
+
+function lightbox(src){if(!src)return;const d=document.createElement("div");d.className="lightbox";d.innerHTML=`<img src="${src}">`;d.onclick=()=>d.remove();document.body.appendChild(d);}
+async function pickRoot(){try{const h=await window.showDirectoryPicker({mode:"readwrite"});await idbSet("root",h);await bindRoot(h);await rescan();}catch(e){}}
+
+window.addEventListener("DOMContentLoaded",async()=>{
+  let th="light";try{th=localStorage.getItem("bb_theme")||"light";}catch(e){}applyTheme(th);
+  if(!window.showDirectoryPicker){$("nosupport").style.display="block";return;}
+  $("app").style.display="block";
+  $("pickRoot").onclick=pickRoot;$("themeBtn").onclick=toggleTheme;
+  $("reload").onclick=()=>rescan().catch(e=>toast(e.message,true));
+  $("backList").onclick=showPicker;
+  $("tabImg").onclick=()=>{tab="img";render();};
+  $("tabSnd").onclick=()=>{tab="snd";render();};
+  $("addAsset").onclick=openAdd;
+  $("pickFilter").addEventListener("input",buildScrollList);
+  $("speciesSelect").addEventListener("change",e=>{if(e.target.value)selectSpecies(e.target.value);});
+  document.querySelectorAll("#imgFilters button").forEach(b=>b.onclick=()=>{imgFilter=b.dataset.f;imgIdx=0;document.querySelectorAll("#imgFilters button").forEach(x=>x.classList.toggle("active",x===b));renderImg();});
+  const saved=await idbGet("root");
+  if(saved){try{await bindRoot(saved);await rescan();}catch(e){toast("Click “Open Boreal-Birds/” to re-grant access.",true);}}
+});
+</script>
+</body>
+</html>
