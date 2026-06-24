@@ -1,0 +1,21 @@
+{
+  "bam_common_name": "YBCU Yellow-billed Cuckoo",
+  "bam_scientific_name": "Coccyzus americanus",
+  "xeno_canto_scientific_name": "Coccyzus americanus",
+  "taxonomy_corrected": false,
+  "xeno_canto_recording_id": 843437,
+  "xeno_canto_english_name": "Yellow-billed Cuckoo",
+  "recordist": "JAYRSON ARAUJO DE OLIVEIRA",
+  "country": "Brazil",
+  "location": "PN Iguacu, Parana state",
+  "date": "2023-11-21",
+  "length": "0:06",
+  "duration_seconds": null,
+  "quality": "A",
+  "type": "call",
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "xeno_canto_url": "https://xeno-canto.org/843437",
+  "audio_url": "https://xeno-canto.org/843437/download",
+  "local_audio_file": "01_843437_qA_0-06.mp3",
+  "selection_mode": "manual add"
+}

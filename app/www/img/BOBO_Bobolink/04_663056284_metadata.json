@@ -4,13 +4,13 @@
   "sex": "female",
   "life_stage": "adult",
   "captive": false,
-  "photo_id": 663056289,
+  "photo_id": 663056284,
   "attribution": "(c) Alexis Hale, some rights reserved (CC BY-NC)",
   "license": "cc-by-nc",
   "obs_url": "https://www.inaturalist.org/observations/363245547",
   "obs_date": "2026-05-19",
   "recorded_by": "alexishale",
-  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/663056289/medium.jpg",
-  "size_kb": 150.0,
-  "local_file": "3_663056289.jpg"
+  "download_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/663056284/medium.jpg",
+  "size_kb": 150,
+  "local_file": "04_663056284.jpg"
 }
