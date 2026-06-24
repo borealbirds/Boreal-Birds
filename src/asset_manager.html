@@ -505,7 +505,7 @@ function openAdd(){
     : `<div class="ititle">⚡ Expedited import</div>
        <div class="seg"><button id="segInat" class="seg-on" type="button">iNaturalist</button><button id="segXc" type="button">Xeno-Canto</button></div>
        <div class="row" style="margin-bottom:8px"><input id="impUrl" value="${INAT_OBS_BASE}"><button id="impBtn" style="white-space:nowrap">Import</button></div>
-       <div class="row" id="keyrow" style="display:none;margin-bottom:8px"><input id="xcKey" placeholder="Xeno-Canto API key" value="${savedKey.replace(/"/g,'&quot;')}"><button id="xcSave" style="white-space:nowrap">Save</button></div>
+       <div class="row" id="keyrow" style="display:none;margin-bottom:8px"><input id="xcKey" placeholder="Xeno-Canto API key" value="${savedKey.replace(/"/g,'&quot;')}"><button id="xcSave" title="Xeno-Canto requires a free API key — create an account at xeno-canto.org and find your key under your account settings/API. It's stored only in this browser tab and cleared when you close it." style="white-space:nowrap">Save</button></div>
        <p class="hint" id="imphint">Add the observation number, e.g. <code>${INAT_OBS_BASE}27400929</code>. File + metadata auto-fill.</p>`;
   bg.innerHTML=`<div class="modal"><h2>Add ${isImg?"image":"sound"} → ${prettySpecies(current.folderName)}</h2>
     <div class="importbox">${importInner}</div>
@@ -542,17 +542,23 @@ function openAdd(){
     try{
       if(src.source==="inat"){
         const obs=await fetchInatObs(src.id);
-        if(isImg){const {meta,fileUrl,fileName}=buildInatImageMeta(obs,folderCommon);setFormFields(form,meta);
+        if(isImg){const {meta,fileUrl,fileName}=buildInatImageMeta(obs,folderCommon);
+          if(anyUrlIn([meta.obs_url,meta.download_url],imgUrlSet()))throw new Error(`This iNaturalist source URL is already in this species — duplicate skipped.`);
+          setFormFields(form,meta);
           try{setFile(await fetchAsFile(fileUrl,fileName,"image/jpeg"));toast("Imported iNat photo + metadata.");}
           catch(e){toast("Metadata filled — image download blocked, drop the file.",true);}}
-        else{const {meta,extra,fileUrl,fileName}=buildInatSoundMeta(obs,folderCommon);setFormFields(form,meta);importExtra=extra;
+        else{const {meta,extra,fileUrl,fileName}=buildInatSoundMeta(obs,folderCommon);
+          if(anyUrlIn([meta.audio_url,extra.inat_url],sndUrlSet()))throw new Error(`This iNaturalist source URL is already in this species — duplicate skipped.`);
+          setFormFields(form,meta);importExtra=extra;
           try{setFile(await fetchAsFile(fileUrl,fileName,"audio/mpeg"));toast("Imported iNat sound + metadata.");}
           catch(e){toast("Metadata filled — audio download blocked, drop the file.",true);}}
       }else{
         if(isImg)throw new Error("Xeno-Canto is audio only — use the Sounds tab.");
         const key=((bg.querySelector("#xcKey")||{}).value||"").trim();
         if(!key)throw new Error("Enter your Xeno-Canto API key, then Save.");
-        const rec=await fetchXcRec(src.id,key);const {meta,fileUrl,fileName}=buildXcMeta(rec,folderCommon);setFormFields(form,meta);
+        const rec=await fetchXcRec(src.id,key);const {meta,fileUrl,fileName}=buildXcMeta(rec,folderCommon);
+        if(anyUrlIn([meta.xeno_canto_url,meta.audio_url],sndUrlSet()))throw new Error(`This Xeno-Canto source URL is already in this species — duplicate skipped.`);
+        setFormFields(form,meta);
         try{setFile(await fetchAsFile(fileUrl,fileName,"audio/mpeg"));toast("Imported XC sound + metadata.");}
         catch(e){toast("Metadata filled — XC blocked the audio (CORS), drop the mp3.",true);}
       }
@@ -596,8 +602,12 @@ function reqfree(l,k,v,o){const f=free(l,k,v,o);f.classList.add("req");f.dataset
 function validate(form){const errs=[];if(!pendingFile)errs.push("No file selected — import or drop one.");form.querySelectorAll(".field").forEach(f=>{const el=f.querySelector("[data-key]");if(!el)return;const lab=f.querySelector("label").textContent.replace(" *","");if(f.dataset.req==="1"&&!String(el.value).trim())errs.push(`“${lab}” is required.`);if(f.dataset.url==="1"&&el.value.trim()&&!/^https?:\/\//i.test(el.value.trim()))errs.push(`“${lab}” must be a URL.`);});return errs;}
 function showErrs(bg,errs){const ul=bg.querySelector("#errs");if(!errs.length){ul.style.display="none";return false;}ul.style.display="block";ul.innerHTML=errs.map(e=>`<li>${e}</li>`).join("");return true;}
 function nextIdx(rows){let mx=0;(rows||[]).forEach(r=>{const n=parseInt(r.prefix.split("_")[0],10);if(!isNaN(n))mx=Math.max(mx,n);});return mx+1;}
-async function addImg(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._img),pid=String(v.photo_id).trim();const fname=`${pad(i)}_${pid}.jpg`,o=coerceImg(v);o.local_file=fname;if(o.size_kb===""||o.size_kb==null)o.size_kb=Number((pendingFile.size/1024).toFixed(1));try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${pid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
-async function addSnd(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._snd),rid=String(v.xeno_canto_recording_id).trim();const q=(v.quality||"").trim(),safeLen=String(v.length||"").replace(/:/g,"-");const fname=`${pad(i)}_${rid}_q${q}_${safeLen}.mp3`;const o=coerceSnd(v);Object.assign(o,importExtra);o.local_audio_file=fname;try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${rid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
+function normUrl(u){if(!u)return "";try{const x=new URL(String(u));return (x.hostname.replace(/^www\./,"")+x.pathname.replace(/\/+$/,"")).toLowerCase();}catch(e){return String(u).trim().toLowerCase().replace(/\/+$/,"");}}
+function imgUrlSet(){const s=new Set();(current._img||[]).forEach(r=>{const m=r.meta||{};[m.obs_url,m.download_url].forEach(u=>{const n=normUrl(u);if(n)s.add(n);});});return s;}
+function sndUrlSet(){const s=new Set();(current._snd||[]).forEach(r=>{const m=r.meta||{};[m.xeno_canto_url,m.audio_url,m.inat_url,m.obs_url].forEach(u=>{const n=normUrl(u);if(n)s.add(n);});});return s;}
+function anyUrlIn(cands,set){return cands.some(u=>{const n=normUrl(u);return n&&set.has(n);});}
+async function addImg(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._img),pid=String(v.photo_id).trim();if(anyUrlIn([v.obs_url,v.download_url],imgUrlSet())){showErrs(bg,["This source URL already exists in this species — duplicate not added."]);return;}const fname=`${pad(i)}_${pid}.jpg`,o=coerceImg(v);o.local_file=fname;if(o.size_kb===""||o.size_kb==null)o.size_kb=Number((pendingFile.size/1024).toFixed(1));try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${pid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
+async function addSnd(bg,form,dir){if(showErrs(bg,validate(form)))return;if(!await ensurePerm(dir))return toast("Permission denied.",true);const v=collect(form),i=nextIdx(current._snd),rid=String(v.xeno_canto_recording_id).trim();if(anyUrlIn([v.xeno_canto_url,v.audio_url,importExtra.inat_url],sndUrlSet())){showErrs(bg,["This source URL already exists in this species — duplicate not added."]);return;}const q=(v.quality||"").trim(),safeLen=String(v.length||"").replace(/:/g,"-");const fname=`${pad(i)}_${rid}_q${q}_${safeLen}.mp3`;const o=coerceSnd(v);Object.assign(o,importExtra);o.local_audio_file=fname;try{await writeBytes(dir,fname,await pendingFile.arrayBuffer());await writeJSON(dir,`${pad(i)}_${rid}_metadata.json`,o);toast("Added "+fname);bg.remove();await loadSpecies();}catch(e){toast("Add failed: "+e.message,true);}}
 
 function lightbox(src){if(!src)return;const d=document.createElement("div");d.className="lightbox";d.innerHTML=`<img src="${src}">`;d.onclick=()=>d.remove();document.body.appendChild(d);}
 async function pickRoot(){try{const h=await window.showDirectoryPicker({mode:"readwrite"});await idbSet("root",h);await bindRoot(h);await rescan();}catch(e){}}
