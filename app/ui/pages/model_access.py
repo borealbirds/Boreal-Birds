@@ -113,7 +113,7 @@ def citing_tab()-> ui.nav_panel:
         A dedicated user interface tab wrapping formal citation documentation.
     """
     return ui.nav_panel(
-        "Citing Results",
+        "Citation",
         ui.layout_columns(
             ui.card(
                 ui.card_header("How to Cite BAM Model Results"),

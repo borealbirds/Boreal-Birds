@@ -29,7 +29,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
         The operational grid environment mapping layout rows and view toggles.
     """
     return ui.nav_panel(
-        "Landbirds v5",
+        "Landbird Density & Habitat",
         ui.layout_sidebar(
             sidebar("v5"),
 

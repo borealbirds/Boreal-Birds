@@ -42,6 +42,13 @@ app_ui = ui.page_navbar(
         "Models",
         landbirds_v5_tab(),
         landbirds_v4_tab(),
+        ui.nav_control(
+            ui.a(
+                "Other Model Products",
+                href="http://data.borealbirds.ca/srv/eng/catalog.search#/home",
+                target="_blank",
+            ),
+        ),
     ),
     ui.nav_menu(
         "Model Access",

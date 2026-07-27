@@ -21,7 +21,7 @@ def landbirds_v4_tab():
     """
     return ui.nav_control(
             ui.a(
-                "Landbirds v4 (Historical)",
+                "Landbird Density & Habitat (v4 archive)",
                 href="https://borealbirds.github.io/",
                 target="_blank",
             ),
