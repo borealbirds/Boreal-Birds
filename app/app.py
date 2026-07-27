@@ -62,6 +62,8 @@ app_ui = ui.page_navbar(
             alt="Boreal Avian Modelling Centre Dashboard",
             height="48"
         ),
+        href="https://borealbirds.ca/",
+        target="_blank",
     ),
     fillable=True,
     footer=footer()
