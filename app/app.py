@@ -39,7 +39,7 @@ app_ui = ui.page_navbar(
     ui.nav_spacer(),
     welcome_tab(),
     ui.nav_menu(
-        "Models",
+        "Explore Models",
         landbirds_v5_tab(),
         landbirds_v4_tab(),
         ui.nav_control(
@@ -51,17 +51,17 @@ app_ui = ui.page_navbar(
         ),
     ),
     ui.nav_menu(
-        "Model Access",
+        "Use Models",
         tools_tab(),
         citing_tab(),
     ),
     methods_tab(),
     ui.nav_menu(
-        "Contact Us",
+        "Contact BAM",
         website(),
         website_contact(),
     ),
-    selected="Welcome",
+    selected="Home",
     id="tabs",
     title=ui.tags.a(
         ui.tags.img(

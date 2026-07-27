@@ -22,7 +22,7 @@ def welcome_tab() -> ui.nav_panel:
         The completed layout container housing cards and project briefs.
     """
     return ui.nav_panel(
-        "Welcome",
+        "Home",
         ui.div(
             {"id": "welcome-panel"},
             ui.layout_columns(

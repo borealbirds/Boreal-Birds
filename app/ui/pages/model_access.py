@@ -78,7 +78,7 @@ def tools_tab()-> ui.nav_panel:
         The constructed interface view holding available developer guidelines.
     """
     return ui.nav_panel(
-        "Tools",
+        "Access & Tools",
         ui.layout_columns(
             ui.card(
                 ui.card_header("Explore BAM Products"),

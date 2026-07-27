@@ -1,1 +1,1 @@
-See **Model Access** tab.
+See the **Use Models** tab.

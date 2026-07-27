@@ -94,7 +94,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                             **Downloading model results** includes population and density estimates, 
                             as well as model metadata, species taxonomy, regions, variables, importance, and validation.
 
-                            For additional model products, please see the **Model Access** tab.
+                            For additional model products, please see the **Use Models** tab.
                             """),
                             ui.card(
                                 ui.download_button("downloadAll", "Download All Results"),
