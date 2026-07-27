@@ -1,5 +1,5 @@
 """
-Backend analytical server coordination engine for Landbirds Version 5 models.
+Backend analytical server for the current Landbird Density & Habitat product (v5).
 
 Orchestrates reactive pipeline computations, updates filtering ranges, 
 handles asynchronous TiTiler spatial metadata statistics collections, and 
@@ -128,7 +128,7 @@ def _format_population_value(pop_df: pl.DataFrame) -> str:
 
 def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
     """
-    Execute reactive data flow state logic for the Version 5 model panel.
+    Execute reactive data flow for the current Landbird Density & Habitat panel (v5).
 
     Manages calculations across distinct application pipelines including Leaflet 
     map view instances, dynamic dataset slicing using Polars, reactive chart rendering 
@@ -894,7 +894,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         response.raise_for_status()
         return response.content
 
-    @render.download(filename=lambda: f"{date.today().isoformat()}_BAMV5-results.xlsx")
+    @render.download(
+        filename=lambda: (
+            f"{date.today().isoformat()}_"
+            "BAM_Landbird-Density-Habitat_v5_all-results.xlsx"
+        )
+    )
     def downloadAll():
         """
         Stream the complete master workbook to the client.
@@ -916,7 +921,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         """
         yield get_workbook_bytes()
 
-    @render.download(filename=lambda: f"{date.today().isoformat()}_{input.species_v5()}_model-results.xlsx")
+    @render.download(
+        filename=lambda: (
+            f"{date.today().isoformat()}_"
+            f"BAM_Landbird-Density-Habitat_v5_{input.species_v5()}_results.xlsx"
+        )
+    )
     def downloadFiltered():
         """
         Generate a filtered multi-sheet workbook in memory.

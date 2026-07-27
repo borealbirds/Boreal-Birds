@@ -1,5 +1,5 @@
 """
-Landbirds Version 5 model layout view.
+Layout for the current Landbird Density & Habitat product (v5).
 
 Assembles the primary model dashboard tab utilizing a conditional view toggle 
 to alternate between geospatial model output mappings and qualitative species briefs.
@@ -19,7 +19,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
     to toggle between a spatial map with band selection, land cover analytics, 
     and population size estimates.
 
-    Current Model tab — compact bird header with MAP/INFO toggle.
+    Landbird Density & Habitat tab — compact bird header with MAP/INFO toggle.
     MAP view: interactive map, land cover, population, density, download.
     INFO view: species info, photo gallery, sounds.
 
@@ -91,10 +91,10 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         "Download",
                         ui.layout_columns(
                             ui.markdown("""
-                            **Downloading model results** includes population and density estimates, 
+                            **Landbird Density & Habitat downloads** include population and density estimates,
                             as well as model metadata, species taxonomy, regions, variables, importance, and validation.
 
-                            For additional model products, please see the **Use Models** tab.
+                            For additional ways to access and use these models, please see the **Use Models** menu.
                             """),
                             ui.card(
                                 ui.download_button("downloadAll", "Download All Results"),
@@ -106,7 +106,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         ),
                     ),
                     title=ui.tooltip(
-                        ui.span("Model Results ", question_circle_fill),
+                        ui.span("Landbird Density & Habitat Results ", question_circle_fill),
                         "Population size (M males) is based on summing up predictive maps by regions.",
                         placement="right",
                         id="results_tooltip",

@@ -39,7 +39,7 @@ def methods_tab() -> ui.nav_panel:
         "Methods",
         ui.layout_columns(
             ui.card(
-                ui.card_header("Our Methods - An Overview"),
+                ui.card_header("Landbird Density & Habitat Models — Version 5.0"),
                 ui.markdown(read_md("methods/methods-intro.md")),
                 class_="methods-info"
             ),

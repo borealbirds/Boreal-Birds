@@ -1,5 +1,5 @@
 """
-Model access layout views, R package vignettes, and citation components.
+Use Models resource views, package vignettes, and citation components.
 
 Constructs dedicated panels for documentation workflows, embedding localized 
 vignette HTML files via iframe modules and parsing reference citations.

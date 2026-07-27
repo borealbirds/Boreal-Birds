@@ -81,8 +81,8 @@ def server(input: Inputs, output: Outputs, session: Session) -> None:
     """
     Root server coordinator for the Shiny application.
 
-    Delegates the reactive session execution loop downstream to the 
-    Version 5 analytical backend engine.
+    Delegates the reactive session execution loop to the backend for the
+    current Landbird Density & Habitat product (v5).
 
     Parameters
     ----------
