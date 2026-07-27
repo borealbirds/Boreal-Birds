@@ -1,9 +1,9 @@
-`BAMexploreR` is an R package for downloading and analyzing landbird density models produced by the Boreal Avian Modelling Centre (BAM). Additional options for model access are also listed below.
+BAM has developed a variety of tools for accessing, exploring, and working with results from BAM's current and archived **Landbird Density & Habitat** models. Choose the `BAMexploreR` R package for scripted workflows, its companion Shiny app for a browser-based graphical interface, or the Google Earth Engine viewer for interactive map exploration. Links to the `BAMexploreR` vignettes provide guidance for accessing model products and examining species distributions and habitat relationships.
 
-1. **[BAMexploreR](https://github.com/borealbirds/BAMexploreR)** - access the R package GitHub page.
-2. **[BAMexploreR Shiny app](https://borealbirds.shinyapps.io/bam_landbird_viewer_dev95/)** - download and analyze rasters with a graphical user interface.
-3. **[Google Earth Engine viewer](https://borealbirds-gee.projects.earthengine.app/view/landbirdmodels)** - view and explore the version 5 Canada-wide models and uncertainty over Google imagery.
-
-The BAM landbird density models are species-specific predictions of the density of breeding male birds per hectare at a 1km resolution across Canada. They are produced with a generalized analytical approach to model landbird species density in relation to environmental predictors, using in-person or ARU point-count surveys and widely available spatial predictors.
-
-We developed separate models for each geographic region (bird conservation regions) based on predictors such as tree species biomass (local and landscape scale), forest age, topography, land use, and climate. We used machine learning to allow for predictor interactions and non-linear responses while avoiding time-consuming species-by-species parameterization. We applied cross-validation to avoid overfitting and bootstrap resampling to estimate uncertainty associated with our density estimates.
+1. **[BAMexploreR R package](https://github.com/borealbirds/BAMexploreR)** — the R interface for accessing results from BAM's current **Landbird Density & Habitat** models and analyzing predicted density, distribution, and habitat relationships.
+   - [Introduction](vignettes/BAMexploreR_1_intro.html)
+   - [Access](vignettes/BAMexploreR_2_access.html)
+   - [Distribution](vignettes/BAMexploreR_3_distribution.html)
+   - [Habitat](vignettes/BAMexploreR_4_habitat.html)
+2. **[BAMexploreR Shiny app](https://borealbirds.shinyapps.io/bam_landbird_viewer_dev95/)** — a browser-based graphical counterpart to the R package for accessing and exploring model results without writing R code.
+3. **[Google Earth Engine viewer](https://borealbirds-gee.projects.earthengine.app/view/landbirdmodels)** — an interactive map for exploring Canada-wide **Landbird Density & Habitat** predictions and uncertainty over Google Earth imagery.

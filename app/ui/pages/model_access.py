@@ -69,8 +69,8 @@ def tools_tab()-> ui.nav_panel:
     """
     Build the tooling resources layout tab view.
 
-    Aggregates overall asset markdown guides and appends individual reference 
-    vignettes within a nested sub-navigation drop-down menu structure.
+    Renders the model-access resources and package-vignette links maintained
+    in the tools Markdown content.
 
     Returns
     -------
@@ -81,18 +81,8 @@ def tools_tab()-> ui.nav_panel:
         "Access & Tools",
         ui.layout_columns(
             ui.card(
-                ui.card_header("Explore BAM Products"),
-                ui.navset_tab(
-                    ui.nav_panel("All", ui.markdown(read_md("tools.md"))),
-                    ui.nav_menu(
-                        "R Package Vignettes",
-                        _vignette_panel("Introduction", "vignettes/BAMexploreR_1_intro.html"),
-                        _vignette_panel("Access", "vignettes/BAMexploreR_2_access.html"),
-                        _vignette_panel("Distribution", "vignettes/BAMexploreR_3_distribution.html"),
-                        _vignette_panel("Habitat", "vignettes/BAMexploreR_4_habitat.html"),
-                    ),
-                    id="tools_navset"
-                ),
+                ui.card_header("Use Landbird Density & Habitat Models"),
+                ui.markdown(read_md("tools.md")),
                 class_="tools-card"
             ),
             col_widths=(-1, 10, -1),
