@@ -28,7 +28,7 @@ def welcome_tab() -> ui.nav_panel:
             ui.layout_columns(
                 announcements_card(display=True),
                 ui.card(
-                    ui.card_header("A Boreal Avian Modelling Project"),
+                    ui.card_header("Explore BAM Model Products"),
                     ui.markdown(read_md("welcome.md")),
                     class_="welcome-card"
                 ),
