@@ -7,8 +7,7 @@ This dashboard is the central place to discover and explore BAM model products. 
 Open **Explore Models** to examine the products currently available in the dashboard:
 
 - **Landbird Density & Habitat** presents BAM's current Version 5.0 models, including 2020 density predictions for 149 species across Canada, Alaska, and the hemiboreal Lower 48 United States.
-- **Landbird Density & Habitat (v4 archive)** provides continued access to the previous model version.
-- **Other Model Products** opens the BAM Geoportal, where you can discover additional spatial products and outputs from BAM research.
+- **Other Model Products** provides access to the Version 4 landbird archive and other waterfowl, landbird, climate, habitat-suitability, and conservation-planning products.
 
 Model predictions represent expected conditions rather than direct observations. Consult the **Methods** page for information about model inputs, calibration, uncertainty, validation, reliability, limitations, and appropriate interpretation.
 

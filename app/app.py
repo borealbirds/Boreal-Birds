@@ -24,9 +24,9 @@ from ui.components.contact import website, website_contact
 from ui.components.layout import footer
 
 from ui.pages.methods import methods_tab
-from ui.pages.landbirds_v4 import landbirds_v4_tab
 from ui.pages.landbirds_v5 import landbirds_v5_tab
 from ui.pages.model_access import citing_tab, tools_tab
+from ui.pages.other_model_products import other_model_products_tab
 from ui.pages.welcome import welcome_tab
 
 
@@ -41,14 +41,7 @@ app_ui = ui.page_navbar(
     ui.nav_menu(
         "Explore Models",
         landbirds_v5_tab(),
-        landbirds_v4_tab(),
-        ui.nav_control(
-            ui.a(
-                "Other Model Products",
-                href="http://data.borealbirds.ca/srv/eng/catalog.search#/home",
-                target="_blank",
-            ),
-        ),
+        other_model_products_tab(),
     ),
     ui.nav_menu(
         "Use Models",
