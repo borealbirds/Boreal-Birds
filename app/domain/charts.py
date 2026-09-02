@@ -179,6 +179,7 @@ def covariate_chart(
 
     bcr_selections = list(bcr)
     cov_name = covariates.filter(pl.col("variable") == covariate).item(0, "name")
+    cov_description = covariates.filter(pl.col("variable") == covariate).item(0, "definition")
 
 
     # --- lookup ---
@@ -211,7 +212,8 @@ def covariate_chart(
             color=alt.Color("bcr:N"),
         ).properties(
             title=alt.TitleParams(
-                text=f"{cov_name} vs Model Predictions",
+                text="",
+                subtitle=cov_description,
                 anchor="start" # Aligns title to the left
             )
         )
@@ -219,7 +221,7 @@ def covariate_chart(
         error = alt.Chart(fx_df).mark_errorbar().encode(
             x=alt.X("lwr:Q", title="Marginal Effect"),
             x2=alt.X2("upr:Q"),
-            y=alt.Y("label:N", title=f"Covariate: {cov_name} {covariate}"),
+            y=alt.Y("label:N", title=f"Predictor: {cov_name} {covariate}"),
             yOffset="bcr:N",
             color=alt.Color("bcr:N", title="BCR").legend(orient="top-right")
         )
@@ -232,9 +234,9 @@ def covariate_chart(
                 alt.Tooltip("bcr:N", title="BCR"),
             ]
         ).configure_title(
-            fontSize=18,
+            fontSize=0,
             color="black",
-            subtitleFontSize=12,
+            subtitleFontSize=16,
             subtitleColor="gray"
         )
 
@@ -242,18 +244,19 @@ def covariate_chart(
     else:
 
         line = alt.Chart(fx_df).mark_line().encode(
-            x=alt.X("x:Q", title=f"Covariate: {cov_name} ({covariate_code})"),
+            x=alt.X("x:Q", title=None),
             y=alt.Y("fit:Q", title="Marginal Effect"),
             color=alt.Color("bcr")
         ).properties(
             title=alt.TitleParams(
-                text=f"{cov_name} vs Model Predictions",
+                text="",
+                subtitle=cov_description,
                 anchor="start" # Aligns title to the left
             )
         )
 
         band = alt.Chart(fx_df).mark_errorband().encode(
-            x=alt.X("x:Q", title=f"Covariate: {covariate}"),
+            x=alt.X("x:Q", title=None),
             y=alt.Y("lwr:Q", title="Marginal Effect"),
             y2=alt.Y2("upr:Q"),
             color=alt.Color("bcr", title="BCR").legend(orient="top-right")
@@ -268,9 +271,9 @@ def covariate_chart(
                 alt.Tooltip("bcr:N", title="BCR"),
             ]
         ).configure_title(
-            fontSize=18,
+            fontSize=0,
             color="black",
-            subtitleFontSize=12,
+            subtitleFontSize=16,
             subtitleColor="gray"
         )
 

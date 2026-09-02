@@ -72,7 +72,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         ui.card(output_widget("density_chart"), full_screen=True),
                     ),
                     ui.nav_panel(
-                        "Covariates",
+                        "Predictors",
                         ui.layout_columns(
                             ui.markdown("""
                             **Explore how each environmental predictor is associated with predicted density of male birds per hectare.**
@@ -90,12 +90,17 @@ def landbirds_v5_tab() -> ui.nav_panel:
                     ui.nav_panel(
                         "Download",
                         ui.layout_columns(
-                            ui.markdown("""
-                            **Landbird Density & Habitat downloads** include population and density estimates,
-                            as well as model metadata, species taxonomy, regions, variables, importance, and validation.
-
-                            For additional ways to access and use these models, please see the **Use Models** menu.
-                            """),
+                            ui.div(
+                                ui.markdown("""
+                                **Landbird Density & Habitat downloads** include population and density estimates,
+                                as well as model metadata, species taxonomy, regions, variables, importance, and validation.
+                                """),
+                                ui.tags.p(
+                                    "Please see the ",
+                                    ui.input_action_link("model_access_link", "Model Access"),
+                                    " tab to download model products as rasters.",
+                                ),
+                            ),
                             ui.card(
                                 ui.download_button("downloadAll", "Download All Results"),
                                 ui.output_ui("download_filtered_btn"),

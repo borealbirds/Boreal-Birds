@@ -261,6 +261,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         ui.update_radio_buttons("view_toggle", selected="map")
 
     @reactive.effect
+    @reactive.event(input.model_access_link)
+    def _open_model_access():
+        """Open the Access & Tools page from the Download tab link."""
+        ui.update_navs("tabs", selected="Access & Tools")
+
+    @reactive.effect
     def update_bcr_filter() -> list:
         """
         Changes the selection of BCR's based on user selected covariate and bird species
@@ -822,14 +828,21 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 "importance_mean", descending=True
             ).select(
                 ["variable", "region", "importance_mean"]
-            ).head()
+            ).head().join(
+                covariates.select(["variable", "name"]),
+                on="variable",
+                how="left",
+            )
         
         importance_data = importance_data.with_columns(
-            pl.col("importance_mean").round(1)
+            pl.col("importance_mean").round(1),
+            pl.coalesce(["name", "variable"]).alias("predictor_name"),
+        ).select(
+            ["predictor_name", "region", "importance_mean"]
         )
         
         importance_data = importance_data.rename({
-            "variable": "Covariate",
+            "predictor_name": "Predictor",
             "region": "BCR",
             "importance_mean": "Score"
         })
@@ -858,7 +871,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             ui.layout_columns(
                 ui.input_select(
                     id="covariate_filter",
-                    label="Select Covariate",
+                    label="Select Predictor",
                     choices=cov_choices,
                 ),
                 # ui.output_text("covariate_desc"),
@@ -871,7 +884,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 col_widths=(12, 12, 12)
             ),
             ui.card(
-                ui.markdown(f"Top Influencers for {bird}"),
+                ui.markdown(f"Predictor Importance for {bird}"),
                 ui.output_data_frame("importance_metrics"),
                 fillable=True,
                 full_screen=True
