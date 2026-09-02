@@ -75,7 +75,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         "Covariates",
                         ui.layout_columns(
                             ui.markdown("""
-                            **Explore the Marginal Effects of each covariate on the Population Density estimate.**
+                            **Explore how each environmental predictor is associated with predicted density of male birds per hectare.**
                             'Species' filter applies.
                             """),
                             ui.layout_columns(
@@ -107,7 +107,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                     ),
                     title=ui.tooltip(
                         ui.span("Landbird Density & Habitat Results ", question_circle_fill),
-                        "Population size (M males) is based on summing up predictive maps by regions.",
+                        "Population size is estimated by summing predicted male density across each region and is reported in millions of male birds.",
                         placement="right",
                         id="results_tooltip",
                         class_="results_tooltip",

@@ -1,4 +1,4 @@
-The distributed prediction rasters contain the mean density and standard deviation across 32 bootstrap predictions. Standard deviation is provided as a single uncertainty band to limit file size. It describes variation among bootstrap predictions but does not represent every source of ecological, observation, or model uncertainty.
+The distributed prediction rasters contain mean predicted density in male birds per hectare and the standard deviation across 32 bootstrap predictions. Standard deviation is provided as a single uncertainty band to limit file size. It describes variation among bootstrap predictions but does not represent every source of ecological, observation, or model uncertainty.
 
 Population and regional density summaries are calculated directly from the 32 bootstrap estimates. They report the median and the 5th and 95th percentiles of the bootstrap distribution.
 

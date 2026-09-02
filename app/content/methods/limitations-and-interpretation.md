@@ -7,4 +7,4 @@ Version 5.0 predictions should be interpreted together with their uncertainty an
 - Predictor availability and retained predictor sets differ among modelling regions, and habitat relationships may vary regionally.
 - Predictor importance and partial dependence describe fitted associations, not causal ecological effects.
 
-Predictions represent expected density at a 1-km resolution and should not be interpreted as direct counts at individual locations.
+Predictions represent expected male-bird density, expressed as male birds per hectare at a 1-km resolution, and should not be interpreted as direct counts at individual locations.

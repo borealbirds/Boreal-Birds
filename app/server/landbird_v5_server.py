@@ -318,12 +318,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 class_="bird-names",
             ),
             ui.div(
-                ui.span("Population Estimate ", class_="bird-pop-label"),
+                ui.span("Population Estimate (male birds) ", class_="bird-pop-label"),
                 ui.span(region, class_="bird-region-label"),
                 ui.span(f" {pop_value}", class_="bird-pop-value"),
                 ui.tooltip(
                     question_circle_fill,
-                    "Population estimate (millions) for the selected region and year",
+                    "Population estimate in millions of male birds for the selected region and year.",
                     placement="right",
                 ),
                 class_="bird-pop",
@@ -399,6 +399,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             widget=HTML(f"""
             <div class="map-legend">
                 <div class="map-legend-title">
+                    <b>Mean density (male birds/ha)</b><br>
                     <b>{rmin:.4f} → {rmax:.4f}</b>
                 </div>
                 <div class="map-legend-gradient"></div>
@@ -416,7 +417,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             f"&rescale={rmin},{rmax}"
         )
 
-        mean_density = TileLayer(url=tile_string, name="Mean Density")
+        mean_density = TileLayer(url=tile_string, name="Mean density (male birds/ha)")
         m.add(mean_density)
         m.add(legend)
 
@@ -535,7 +536,18 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             }
         ]
 
-        return render.DataGrid(df.select(pl.exclude("selected_region")), selection_mode="rows", styles=selected_style)
+        display_df = df.select(pl.exclude("selected_region")).rename({
+            "year": "Year",
+            "region": "Region",
+            "population_estimate": "Population estimate (millions of male birds)",
+            "population_lower": "Population lower bound (millions of male birds)",
+            "population_upper": "Population upper bound (millions of male birds)",
+            "density_estimate": "Density estimate (male birds/ha)",
+            "density_lower": "Density lower bound (male birds/ha)",
+            "density_upper": "Density upper bound (male birds/ha)",
+        })
+
+        return render.DataGrid(display_df, selection_mode="rows", styles=selected_style)
 
     # ── INFO TAB ───────────────────────────────────────────────────────
 
