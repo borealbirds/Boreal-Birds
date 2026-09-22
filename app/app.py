@@ -24,9 +24,9 @@ from ui.components.contact import website, website_contact
 from ui.components.layout import footer
 
 from ui.pages.methods import methods_tab
-from ui.pages.landbirds_v4 import landbirds_v4_tab
 from ui.pages.landbirds_v5 import landbirds_v5_tab
 from ui.pages.model_access import citing_tab, tools_tab
+from ui.pages.other_model_products import other_model_products_tab
 from ui.pages.welcome import welcome_tab
 
 
@@ -39,22 +39,22 @@ app_ui = ui.page_navbar(
     ui.nav_spacer(),
     welcome_tab(),
     ui.nav_menu(
-        "Models",
+        "Explore Models",
         landbirds_v5_tab(),
-        landbirds_v4_tab(),
+        other_model_products_tab(),
     ),
     ui.nav_menu(
-        "Model Access",
+        "Use Models",
         tools_tab(),
         citing_tab(),
     ),
     methods_tab(),
     ui.nav_menu(
-        "Contact Us",
+        "Contact BAM",
         website(),
         website_contact(),
     ),
-    selected="Welcome",
+    selected="Home",
     id="tabs",
     title=ui.tags.a(
         ui.tags.img(
@@ -62,6 +62,8 @@ app_ui = ui.page_navbar(
             alt="Boreal Avian Modelling Centre Dashboard",
             height="48"
         ),
+        href="https://borealbirds.ca/",
+        target="_blank",
     ),
     fillable=True,
     footer=footer()
@@ -72,8 +74,8 @@ def server(input: Inputs, output: Outputs, session: Session) -> None:
     """
     Root server coordinator for the Shiny application.
 
-    Delegates the reactive session execution loop downstream to the 
-    Version 5 analytical backend engine.
+    Delegates the reactive session execution loop to the backend for the
+    current Landbird Density & Habitat product (v5).
 
     Parameters
     ----------

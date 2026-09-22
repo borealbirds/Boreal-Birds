@@ -1,32 +1,38 @@
-- section: Study Area
-  file: methods/study-area.md
+- section: Purpose, Scope, and Outputs
+  file: methods/purpose-scope-and-outputs.md
 
-- section: Avian Data and Subsampling
-  file: methods/data-and-subsampling.md
+- section: Study Area and Modelling Regions
+  file: methods/study-area-and-regions.md
 
-- section: Density Calibration, Detectability Offsets
-  file: methods/density-calibration-and-offsets.md
+- section: Bird Observations and Subsampling
+  file: methods/observations-and-subsampling.md
 
-- section: Environmental Covariates
-  file: methods/environmental-covariates.md
+- section: Detectability and Density Calibration
+  file: methods/detectability-and-density-calibration.md
 
-- section: Model Building
-  file: methods/model-building.md
+- section: Environmental Predictors
+  file: methods/environmental-predictors.md
 
-- section: Model Validation
-  file: methods/model-validation.md
+- section: Model Tuning and Fitting
+  file: methods/model-tuning-and-fitting.md
 
-- section: Bootstrap Averaging and Prediction
-  file: methods/bootstrap-averaging-prediction.md
+- section: Spatial Predictions and Regional Mosaics
+  file: methods/spatial-predictions-and-mosaics.md
 
-- section: Density Maps
-  file: methods/density-maps.md
+- section: Prediction Post-processing
+  file: methods/prediction-post-processing.md
 
-- section: Regional Population Estimates
-  file: methods/regional-population-estimates.md
+- section: Model Support and Reliability Rasters
+  file: methods/model-support-and-reliability.md
 
-- section: Land Cover Based Density Estimates
-  file: methods/landcover-density-estimates.md
+- section: Uncertainty and Validation
+  file: methods/uncertainty-and-validation.md
 
-- section: Data Availability
-  file: methods/data-availability.md
+- section: Population and Predictor Summaries
+  file: methods/population-and-predictor-summaries.md
+
+- section: Limitations and Interpretation
+  file: methods/limitations-and-interpretation.md
+
+- section: Access and Technical Documentation
+  file: methods/access-and-technical-documentation.md

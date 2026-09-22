@@ -36,7 +36,7 @@ def website_contact() -> ui.nav_control:
     """
     return ui.nav_control(
         ui.a(
-            "Email Us",
+            "Contact Us",
             href="https://borealbirds.ca/contact/",
             target="_blank",
             ),

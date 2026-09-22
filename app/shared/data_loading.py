@@ -37,7 +37,7 @@ def select_covariate_file(covariate_code: str) -> tuple[str, str]:
     """
     base = f"{PREDICTORS_FOLDER}{covariate_code}"
 
-    continuous_url = f"{base}_gampredictions.csv"
+    continuous_url = f"{base}_bootstrap_summary.csv"
     discrete_url = f"{base}_errorbars.csv"
 
     try:

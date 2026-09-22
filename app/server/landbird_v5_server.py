@@ -1,5 +1,5 @@
 """
-Backend analytical server coordination engine for Landbirds Version 5 models.
+Backend analytical server for the current Landbird Density & Habitat product (v5).
 
 Orchestrates reactive pipeline computations, updates filtering ranges, 
 handles asynchronous TiTiler spatial metadata statistics collections, and 
@@ -128,7 +128,7 @@ def _format_population_value(pop_df: pl.DataFrame) -> str:
 
 def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
     """
-    Execute reactive data flow state logic for the Version 5 model panel.
+    Execute reactive data flow for the current Landbird Density & Habitat panel (v5).
 
     Manages calculations across distinct application pipelines including Leaflet 
     map view instances, dynamic dataset slicing using Polars, reactive chart rendering 
@@ -261,6 +261,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         ui.update_radio_buttons("view_toggle", selected="map")
 
     @reactive.effect
+    @reactive.event(input.model_access_link)
+    def _open_model_access():
+        """Open the Access & Tools page from the Download tab link."""
+        ui.update_navs("tabs", selected="Access & Tools")
+
+    @reactive.effect
     def update_bcr_filter() -> list:
         """
         Changes the selection of BCR's based on user selected covariate and bird species
@@ -318,12 +324,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 class_="bird-names",
             ),
             ui.div(
-                ui.span("Population Estimate ", class_="bird-pop-label"),
+                ui.span("Population Estimate (male birds) ", class_="bird-pop-label"),
                 ui.span(region, class_="bird-region-label"),
                 ui.span(f" {pop_value}", class_="bird-pop-value"),
                 ui.tooltip(
                     question_circle_fill,
-                    "Population estimate (millions) for the selected region and year",
+                    "Population estimate in millions of male birds for the selected region and year.",
                     placement="right",
                 ),
                 class_="bird-pop",
@@ -399,6 +405,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             widget=HTML(f"""
             <div class="map-legend">
                 <div class="map-legend-title">
+                    <b>Mean density (male birds/ha)</b><br>
                     <b>{rmin:.4f} → {rmax:.4f}</b>
                 </div>
                 <div class="map-legend-gradient"></div>
@@ -416,7 +423,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             f"&rescale={rmin},{rmax}"
         )
 
-        mean_density = TileLayer(url=tile_string, name="Mean Density")
+        mean_density = TileLayer(url=tile_string, name="Mean density (male birds/ha)")
         m.add(mean_density)
         m.add(legend)
 
@@ -535,7 +542,18 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             }
         ]
 
-        return render.DataGrid(df.select(pl.exclude("selected_region")), selection_mode="rows", styles=selected_style)
+        display_df = df.select(pl.exclude("selected_region")).rename({
+            "year": "Year",
+            "region": "Region",
+            "population_estimate": "Population estimate (millions of male birds)",
+            "population_lower": "Population lower bound (millions of male birds)",
+            "population_upper": "Population upper bound (millions of male birds)",
+            "density_estimate": "Density estimate (male birds/ha)",
+            "density_lower": "Density lower bound (male birds/ha)",
+            "density_upper": "Density upper bound (male birds/ha)",
+        })
+
+        return render.DataGrid(display_df, selection_mode="rows", styles=selected_style)
 
     # ── INFO TAB ───────────────────────────────────────────────────────
 
@@ -810,14 +828,21 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 "importance_mean", descending=True
             ).select(
                 ["variable", "region", "importance_mean"]
-            ).head()
+            ).head().join(
+                covariates.select(["variable", "name"]),
+                on="variable",
+                how="left",
+            )
         
         importance_data = importance_data.with_columns(
-            pl.col("importance_mean").round(1)
+            pl.col("importance_mean").round(1),
+            pl.coalesce(["name", "variable"]).alias("predictor_name"),
+        ).select(
+            ["predictor_name", "region", "importance_mean"]
         )
         
         importance_data = importance_data.rename({
-            "variable": "Covariate",
+            "predictor_name": "Predictor",
             "region": "BCR",
             "importance_mean": "Score"
         })
@@ -846,7 +871,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             ui.layout_columns(
                 ui.input_select(
                     id="covariate_filter",
-                    label="Select Covariate",
+                    label="Select Predictor",
                     choices=cov_choices,
                 ),
                 # ui.output_text("covariate_desc"),
@@ -859,7 +884,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 col_widths=(12, 12, 12)
             ),
             ui.card(
-                ui.markdown(f"Top Influencers for {bird}"),
+                ui.markdown(f"Predictor Importance for {bird}"),
                 ui.output_data_frame("importance_metrics"),
                 fillable=True,
                 full_screen=True
@@ -894,7 +919,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         response.raise_for_status()
         return response.content
 
-    @render.download(filename=lambda: f"{date.today().isoformat()}_BAMV5-results.xlsx")
+    @render.download(
+        filename=lambda: (
+            f"{date.today().isoformat()}_"
+            "BAM_Landbird-Density-Habitat_v5_all-results.xlsx"
+        )
+    )
     def downloadAll():
         """
         Stream the complete master workbook to the client.
@@ -916,7 +946,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         """
         yield get_workbook_bytes()
 
-    @render.download(filename=lambda: f"{date.today().isoformat()}_{input.species_v5()}_model-results.xlsx")
+    @render.download(
+        filename=lambda: (
+            f"{date.today().isoformat()}_"
+            f"BAM_Landbird-Density-Habitat_v5_{input.species_v5()}_results.xlsx"
+        )
+    )
     def downloadFiltered():
         """
         Generate a filtered multi-sheet workbook in memory.

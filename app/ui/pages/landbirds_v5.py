@@ -1,5 +1,5 @@
 """
-Landbirds Version 5 model layout view.
+Layout for the current Landbird Density & Habitat product (v5).
 
 Assembles the primary model dashboard tab utilizing a conditional view toggle 
 to alternate between geospatial model output mappings and qualitative species briefs.
@@ -19,7 +19,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
     to toggle between a spatial map with band selection, land cover analytics, 
     and population size estimates.
 
-    Current Model tab — compact bird header with MAP/INFO toggle.
+    Landbird Density & Habitat tab — compact bird header with MAP/INFO toggle.
     MAP view: interactive map, land cover, population, density, download.
     INFO view: species info, photo gallery, sounds.
 
@@ -29,7 +29,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
         The operational grid environment mapping layout rows and view toggles.
     """
     return ui.nav_panel(
-        "Landbirds v5",
+        "Landbird Density & Habitat",
         ui.layout_sidebar(
             sidebar("v5"),
 
@@ -72,10 +72,10 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         ui.card(output_widget("density_chart"), full_screen=True),
                     ),
                     ui.nav_panel(
-                        "Covariates",
+                        "Predictors",
                         ui.layout_columns(
                             ui.markdown("""
-                            **Explore the Marginal Effects of each covariate on the Population Density estimate.**
+                            **Explore how each environmental predictor is associated with predicted density of male birds per hectare.**
                             'Species' filter applies.
                             """),
                             ui.layout_columns(
@@ -90,12 +90,17 @@ def landbirds_v5_tab() -> ui.nav_panel:
                     ui.nav_panel(
                         "Download",
                         ui.layout_columns(
-                            ui.markdown("""
-                            **Downloading model results** includes population and density estimates, 
-                            as well as model metadata, species taxonomy, regions, variables, importance, and validation.
-
-                            For additional model products, please see the **Model Access** tab.
-                            """),
+                            ui.div(
+                                ui.markdown("""
+                                **Landbird Density & Habitat downloads** include population and density estimates,
+                                as well as model metadata, species taxonomy, regions, variables, importance, and validation.
+                                """),
+                                ui.tags.p(
+                                    "Please see the ",
+                                    ui.input_action_link("model_access_link", "Model Access"),
+                                    " tab to download model products as rasters.",
+                                ),
+                            ),
                             ui.card(
                                 ui.download_button("downloadAll", "Download All Results"),
                                 ui.output_ui("download_filtered_btn"),
@@ -106,8 +111,8 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         ),
                     ),
                     title=ui.tooltip(
-                        ui.span("Model Results ", question_circle_fill),
-                        "Population size (M males) is based on summing up predictive maps by regions.",
+                        ui.span("Landbird Density & Habitat Results ", question_circle_fill),
+                        "Population size is estimated by summing predicted male density across each region and is reported in millions of male birds.",
                         placement="right",
                         id="results_tooltip",
                         class_="results_tooltip",

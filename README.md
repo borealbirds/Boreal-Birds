@@ -1,6 +1,6 @@
 # Boreal Birds Dashboard
 
-An interactive dashboard for exploring Boreal Avian Modelling (BAM) bird population and habitat model outputs across boreal North America. The project focuses on improving accessibility and interactivity for BAM model visualizations by replacing static outputs with dynamic maps, charts, filters, and summary metrics.
+An interactive dashboard for exploring Boreal Avian Modelling (BAM) model products. The project focuses on improving accessibility and interactivity for BAM model visualizations by replacing static outputs with dynamic maps, charts, filters, and summary metrics.
 
 This initiative is a partnership between Masters of Data Science (MDS) students at the University of British Columbia (UBC), in collaboration and consultation with the Boreal Avian Modelling Centre (BAM).
 
@@ -9,7 +9,7 @@ This initiative is a partnership between Masters of Data Science (MDS) students 
 - Interactive raster map visualizations
 - Bird species and region filters
 - Summary charts and tables
-- Exploration of BAM Landbird version 5 model outputs
+- Exploration of BAM model products
 - Shiny-based dashboard
 
 ---
@@ -141,7 +141,7 @@ Members of the team included Wesley Beard, Suryash Chakravarty, Harrison Li, and
 - Boreal Avian Modelling Centre: [Boreal Birds](https://borealbirds.github.io/)
 - Cloud Optimized GeoTIFF (COG): [cogeo.org](https://cogeo.org/)
 - BAM Shiny Explorer: [BAM Landbird Explorer](https://borealbirds.shinyapps.io/bam_landbird_explorer/)
-- Landbird Models V5: [Landbird Models V5](https://github.com/borealbirds/LandbirdModelsV5)
+- Landbird Density & Habitat model source (v5): [LandbirdModelsV5](https://github.com/borealbirds/LandbirdModelsV5)
 - [Xeno-Canto](https://xeno-canto.org/)
 - [iNaturalist](https://www.inaturalist.org/)
 - [eBird](https://ebird.org/home)

@@ -1,0 +1,3 @@
+Species-specific statistical offsets were calculated using **QPAD Version 3** to account for variation in availability and detection among surveys. Availability adjustments incorporated survey duration, time since sunrise, day of year, and seasonal progression where applicable. Detection adjustments incorporated the survey's distance limit, tree cover, and broad land-cover class.
+
+The resulting offset combined the estimated probability that a bird was available to be detected, the effective area sampled, and the probability of detection within that area. Offsets were included in the boosted regression tree models so that expected values represented male density rather than uncorrected counts. Survey year and survey method were also included as model predictors.

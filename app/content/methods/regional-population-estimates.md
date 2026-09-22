@@ -1,1 +1,0 @@
-Regional population estimates (millions of male individuals) for each species and regions (Canada and subunits) were estimated by summing up the pixel level predictions within the region of interest accounting for the area difference (ha to km2). Uncertainty around the population estimates was based on the 5th and 95th percentiles of the bootstrap distribution.
