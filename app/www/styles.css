@@ -36,10 +36,10 @@ body {
   border: 0 !important;
 }
 
-.tab-pane[data-value="Welcome"],
+.tab-pane[data-value="Home"],
 .tab-pane[data-value="Methods"],
-.tab-pane[data-value="Citing Results"],
-.tab-pane[data-value="Tools"] {
+.tab-pane[data-value="Citation"],
+.tab-pane[data-value="Access & Tools"] {
   background-image: 
     linear-gradient(to bottom, rgba(21, 59, 64, 0.4), rgba(21, 59, 64, 0.4)),
     url('/img/BAM-OurWork-BaltimoreOriole.jpg');
