@@ -64,7 +64,7 @@ quartodoc:
         - ui.layout.sidebar
         - ui.pages.welcome
         - ui.pages.methods
-        - ui.pages.landbirds_v4
+        - ui.pages.other_model_products
         - ui.pages.landbirds_v5
         - ui.pages.model_access
 

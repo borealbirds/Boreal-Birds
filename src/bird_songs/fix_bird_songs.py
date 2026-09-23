@@ -39,7 +39,7 @@ MISSING = {
     "WITU": ("Wild Turkey",           "Meleagris gallopavo"),
 }
 
-# ── Settings (mirrors download_xc_songs.py) ───────────────────────────
+# Settings (mirrors download_bird_songs.py)
 MAX_RECORDINGS           = 2
 MAX_RECORDINGS_LONG_TIER = 1
 INAT_API                 = "https://api.inaturalist.org/v1"
