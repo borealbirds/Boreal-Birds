@@ -12,22 +12,26 @@ page-layout: full
 
 - - `welcome.md`
   - content for the welcome main tab
-  - `app/content/welcome.py`
+  - `app/ui/pages/welcome.py`
 
 - - `announcements.md`
   - content for any short-term notices
-  - `app/content/welcome.py`
+  - `app/ui/components/announcements.py`
 
 - - `tools.md`
   - location for externally available materials
-  - `app/content/model_access.py`
+  - `app/ui/pages/model_access.py`
 
 - - `citing.md`
   - instructions on how to cite the model results
-  - `app/ui/model_access.py`
+  - `app/ui/pages/model_access.py`
 :::
 
-## Methods (see `app/content/methods.py`)
+## Methods
+
+The Methods interface is defined in `app/ui/pages/methods.py`. Its
+accordion sections are configured in
+`app/content/methods/methods-sections.yaml`.
 
 ::: {.list-table}
 - - Files
@@ -44,36 +48,42 @@ page-layout: full
 - - Markdown Files
   - Description
 
-- - `study-area.md`
-  - Study Area
+- - `purpose-scope-and-outputs.md`
+  - Purpose, Scope, and Outputs
 
-- - `data-and-subsampling.md`
-  - Avian Data and Subsampling
+- - `study-area-and-regions.md`
+  - Study Area and Modelling Regions
 
-- - `density-calibration-and-offsets.md`
-  - Density Calibration, Detectability Offsets
+- - `observations-and-subsampling.md`
+  - Bird Observations and Subsampling
 
-- - `environmental-covariates.md`
-  - Environmental Covariates
+- - `detectability-and-density-calibration.md`
+  - Detectability and Density Calibration
 
-- - `model-building.md`
-  - Model Building
+- - `environmental-predictors.md`
+  - Environmental Predictors
 
-- - `model-validation.md`
-  - Model Validation
+- - `model-tuning-and-fitting.md`
+  - Model Tuning and Fitting
 
-- - `bootstrap-averaging-prediction.md`
-  - Bootstrap Averaging and Prediction
+- - `spatial-predictions-and-mosaics.md`
+  - Spatial Predictions and Regional Mosaics
 
-- - `density-maps.md`
-  - Density Maps
+- - `prediction-post-processing.md`
+  - Prediction Post-processing
 
-- - `regional-population-estimates.md`
-  - Regional Population Estimates
+- - `model-support-and-reliability.md`
+  - Model Support and Reliability Rasters
 
-- - `landcover-density-estimates.md`
-  - Land Cover Based Density Estimates
+- - `uncertainty-and-validation.md`
+  - Uncertainty and Validation
 
-- - `data-availability.md`
-  - Data Availability
+- - `population-and-predictor-summaries.md`
+  - Population and Predictor Summaries
+
+- - `limitations-and-interpretation.md`
+  - Limitations and Interpretation
+
+- - `access-and-technical-documentation.md`
+  - Access and Technical Documentation
 :::

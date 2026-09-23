@@ -11,9 +11,9 @@ No API required for iNaturalist.
 Audio =>   app/www/audio/{species_id}/
 Logs  =>   src/bird_songs/download_logs/summaries.txt
 
-Run:
-  python download_xc_songs.py                   # fresh run
-  python download_xc_songs.py --resume         # skip already-downloaded species
+Run from the repository root:
+  python src/bird_songs/download_bird_songs.py           # fresh run
+  python src/bird_songs/download_bird_songs.py --resume  # skip already-downloaded species
 '''
 
 
