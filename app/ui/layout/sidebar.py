@@ -72,4 +72,4 @@ def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
             )
         )
 
-    return ui.sidebar(*sidebar_elements, width=375)
+    return ui.sidebar(*sidebar_elements, width=375, open="open")
