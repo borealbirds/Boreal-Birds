@@ -43,7 +43,7 @@ Modular frontend interface elements, page layouts, navigation controls, and view
 | [ui.layout.sidebar](ui.layout.sidebar.qmd#app.ui.layout.sidebar) | Sidebar navigation controls and reactive inputs for model tabs. |
 | [ui.pages.welcome](ui.pages.welcome.qmd#app.ui.pages.welcome) | Welcome tab layout and announcement sub-components for the dashboard. |
 | [ui.pages.methods](ui.pages.methods.qmd#app.ui.pages.methods) | Methods and modeling methodologies layout views. |
-| [ui.pages.landbirds_v4](ui.pages.landbirds_v4.qmd#app.ui.pages.landbirds_v4) | Landbirds Version 4 historical model placeholder view template. |
+| [ui.pages.other_model_products](ui.pages.other_model_products.qmd#app.ui.pages.other_model_products) | Other BAM model products resource page. |
 | [ui.pages.landbirds_v5](ui.pages.landbirds_v5.qmd#app.ui.pages.landbirds_v5) | Landbirds Version 5 model layout view. |
 | [ui.pages.model_access](ui.pages.model_access.qmd#app.ui.pages.model_access) | Model access layout views, R package vignettes, and citation components. |
 

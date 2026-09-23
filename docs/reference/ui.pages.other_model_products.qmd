@@ -1,0 +1,19 @@
+# ui.pages.other_model_products { #app.ui.pages.other_model_products }
+
+`ui.pages.other_model_products`
+
+Other BAM model products resource page.
+
+## Functions
+
+| Name | Description |
+| --- | --- |
+| [other_model_products_tab](#app.ui.pages.other_model_products.other_model_products_tab) | Build the page linking to BAM model products hosted elsewhere. |
+
+### other_model_products_tab { #app.ui.pages.other_model_products.other_model_products_tab }
+
+```python
+ui.pages.other_model_products.other_model_products_tab()
+```
+
+Build the page linking to BAM model products hosted elsewhere.
