@@ -174,7 +174,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         """
         return abundances.filter(
             #(pl.col("english") == input.species_v5()) & (pl.col("year") == str(input.year_v5()))
-            (pl.col("english") == input.species_v5()) & (pl.col("year") == str(PREDICTION_YEAR))
+            (pl.col("english") == input.species_v5()) & (pl.col("year").cast(pl.String) == str(PREDICTION_YEAR))
         )
 
     @reactive.calc
@@ -193,7 +193,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             (pl.col("english") == input.species_v5()) &
             (pl.col("region")  == input.region_v5()) &
             #(pl.col("year")    == str(input.year_v5()))
-            (pl.col("year")    == str(PREDICTION_YEAR))
+            (pl.col("year").cast(pl.String) == str(PREDICTION_YEAR))
         )
 
     @reactive.calc
@@ -524,7 +524,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             return render.DataGrid(pl.DataFrame(), selection_mode="rows")
 
         #df = population_data().filter(pl.col("year") == str(year))
-        df = population_data().filter(pl.col("year") == str(PREDICTION_YEAR))
+        df = population_data().filter(pl.col("year").cast(pl.String) == str(PREDICTION_YEAR))
         df = df.select([
             "year",
             "region", 
@@ -997,7 +997,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         abundances = pl.read_excel(io.BytesIO(workbook_bytes), sheet_name="abundances").filter(
             (pl.col("english") == input.species_v5())
             #& (pl.col("year") == str(input.year_v5()))
-            & (pl.col("year") == str(PREDICTION_YEAR))
+            & (pl.col("year").cast(pl.String) == str(PREDICTION_YEAR))
         )
 
         with io.BytesIO() as buffer:
