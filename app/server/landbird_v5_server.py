@@ -395,8 +395,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         region = input.region_v5()
         
         # Basemaps Setup
-        positron = basemap_to_tiles(basemaps.CartoDB.Positron)
-        positron.base, positron.name = True, "Positron (minimal)"
+        gray = basemap_to_tiles(basemaps.Esri.WorldGrayCanvas)
+        gray.base, gray.name = True, "Light Gray Canvas (minimal)"
 
         osm = basemap_to_tiles(basemaps.OpenStreetMap.Mapnik)
         osm.base, osm.name = True, "Open Street Map (default)"
@@ -406,7 +406,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
 
         # initialize map
         map_center = REGION_CENTERS.get(region, [60.0, -110.0])
-        m = Map(layers=[esri, positron, osm], center=map_center, zoom=4, scroll_wheel_zoom=True)
+        m = Map(layers=[esri, gray, osm], center=map_center, zoom=4, scroll_wheel_zoom=True)
 
         # generate legend using stats from titiler
         rmin, rmax = info["min"], info["max"]
