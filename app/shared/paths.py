@@ -32,6 +32,9 @@ BOUNDARIES_PATH = f"{DASHBOARD_FOLDER_URL}gisdata/Subregions_Mosaics_EPSG4326.sh
 
 COVARIATE_METADATA = f"{DASHBOARD_FOLDER_URL}covariate_metadata_modelevaluation.csv"
 
+# Only publicly released prediction year; 1990-2015 are available upon request
+PREDICTION_YEAR = 2020
+
 
 def get_tif_path(species_id: str, region: str, year: int) -> str:
     """

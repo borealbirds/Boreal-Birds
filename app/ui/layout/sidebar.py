@@ -7,9 +7,10 @@ consistent dashboard filtering sidebars across distinct framework versions.
 
 from shiny import ui
 from shared.data_loading import load_species_metadata
+from shared.paths import PREDICTION_YEAR
 
-
-def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
+#def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
+def sidebar(model_version: str) -> ui.sidebar:
     """
     Initialize the standardized filtering sidebar layout for bird model views.
 
@@ -25,12 +26,13 @@ def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
         If True, includes a slider input for years between 1990 and 2020.
         If False, disables the slider from sidebar in favour of a dropdown
         menu that can be used to limit options to select years.
-
     Returns
     -------
     shiny.ui.sidebar
         The configured layout panel object containing the filter controls.
     """
+        
+
     species_choices = sorted(load_species_metadata().get_column("english").to_list())
 
     sidebar_elements = [
@@ -46,30 +48,37 @@ def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
             "Region",
             choices=["Canada", "Alaska", "Lower48"],
         ),
-    ]
-
+    #]
+    #
     # include year slider if year_slider = True
-    if year_slider:
-        sidebar_elements.append(
-            ui.input_slider(
-                f"year_{model_version}",
-                "Year",
-                min=1990,
-                max=2020,
-                value=2020,
-                step=5,
-                ticks=True,
-                sep=''
-            )
-        )
-    else:
-        sidebar_elements.append(
-            ui.input_select(
-                f"year_{model_version}",
-                "Year",
-                choices=["2020"],
-                selected=["2020"]
-            )
-        )
+    #if year_slider:
+    #    sidebar_elements.append(
+    #        ui.input_slider(
+    #            f"year_{model_version}",
+    #            "Year",
+    #            min=1990,
+    #            max=2020,
+    #            value=2020,
+    #            step=5,
+    #            ticks=True,
+    #            sep=''
+    #        )
+    #    )
+    #else:
+    #    sidebar_elements.append(
+    #        ui.input_select(
+    #            f"year_{model_version}",
+    #            "Year",
+    #            choices=["2020"],
+    #            selected=["2020"]
+    #        )
+    #    )
+
+        ui.p(
+            f"Predictions represent {PREDICTION_YEAR} conditions. "
+            "Predictions for 1990–2015 are available upon request.",
+            class_="text-muted small",
+        ),
+    ]
 
     return ui.sidebar(*sidebar_elements, width=375, open="open")

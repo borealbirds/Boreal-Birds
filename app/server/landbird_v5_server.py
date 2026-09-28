@@ -41,7 +41,7 @@ from domain.charts import *
 from domain.map import *
 
 from shared.data_loading import *
-from shared.paths import url_exists, get_tif_path
+from shared.paths import url_exists, get_tif_path, PREDICTION_YEAR
 from utils.titiler import *
 
 # alt.data_transformers.enable("vegafusion")
@@ -173,7 +173,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             Complete temporal and regional abundance rows for the selected species.
         """
         return abundances.filter(
-            (pl.col("english") == input.species_v5()) & (pl.col("year") == str(input.year_v5()))
+            #(pl.col("english") == input.species_v5()) & (pl.col("year") == str(input.year_v5()))
+            (pl.col("english") == input.species_v5()) & (pl.col("year") == str(PREDICTION_YEAR))
         )
 
     @reactive.calc
@@ -191,7 +192,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         return abundances.filter(
             (pl.col("english") == input.species_v5()) &
             (pl.col("region")  == input.region_v5()) &
-            (pl.col("year")    == str(input.year_v5()))
+            #(pl.col("year")    == str(input.year_v5()))
+            (pl.col("year")    == str(PREDICTION_YEAR))
         )
 
     @reactive.calc
@@ -207,11 +209,15 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         bird = current_bird_meta()
         species_id = bird.item(0, "id") if len(bird) > 0 else None
         region = input.region_v5()
-        year = input.year_v5()
+        #year = input.year_v5()
 
-        if not species_id or not region or not year:
+        #if not species_id or not region or not year:
+        #    return None
+        #return get_tif_path(species_id, region, int(year))
+
+        if not species_id or not region:
             return None
-        return get_tif_path(species_id, region, int(year))
+        return get_tif_path(species_id, region, PREDICTION_YEAR)
 
     @reactive.calc
     def raster_info() -> dict:
@@ -507,14 +513,15 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         shiny.render.DataGrid
             Sorted metrics collection with active background rows highlighted.
         """
+        #year = int(input.year_v5())
+
         region = input.region_v5()
-        year = int(input.year_v5())
 
         if not region:
             return render.DataGrid(pl.DataFrame(), selection_mode="rows")
 
-
-        df = population_data().filter(pl.col("year") == str(year))
+        #df = population_data().filter(pl.col("year") == str(year))
+        df = population_data().filter(pl.col("year") == str(PREDICTION_YEAR))
         df = df.select([
             "year",
             "region", 
@@ -986,7 +993,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         )
         abundances = pl.read_excel(io.BytesIO(workbook_bytes), sheet_name="abundances").filter(
             (pl.col("english") == input.species_v5())
-            & (pl.col("year") == str(input.year_v5()))
+            #& (pl.col("year") == str(input.year_v5()))
+            & (pl.col("year") == str(PREDICTION_YEAR))
         )
 
         with io.BytesIO() as buffer:
