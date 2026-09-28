@@ -47,7 +47,7 @@ def tiler_is_healthy() -> bool:
     try:
         r = requests.get(
             f"{PRODUCTION_TILER_BASE}/health",
-            timeout=3
+            timeout=10
         )
 
         healthy = (

@@ -234,13 +234,11 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             return {"status": "loading"}
         if not url or not url_exists(url):
             return {"status": "missing"}
-        if not tiler_is_healthy():
-            return {"status": "tiler_unavailable"}
 
         try:
             encoded_cog = requests.utils.quote(url, safe="")
             stats_url = f"{PRODUCTION_TILER_BASE}/cog/statistics?url={encoded_cog}"
-            res = requests.get(stats_url, timeout=5)
+            res = requests.get(stats_url, timeout=15)
             res.raise_for_status()
 
             stats = res.json()
@@ -256,7 +254,12 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             }
         except Exception as e:
             print(f"Statistics request failed: {e}")
-            return {"status": "tiler_starting"}
+
+            # retry until the tiler responds; health check only picks the message
+            reactive.invalidate_later(10)
+            if tiler_is_healthy():
+                return {"status": "tiler_starting"}
+            return {"status": "tiler_unavailable"}
 
 
     # UI updates
