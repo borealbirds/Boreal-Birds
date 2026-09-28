@@ -197,7 +197,7 @@ def covariate_chart(
     file_url, mode = select_covariate_file(covariate_code)
 
     # --- load data ---
-    fx_df = pl.read_csv(file_url).filter(
+    fx_df = pl.read_csv(file_url, null_values="NA").filter(
         (pl.col("species") == bird_code) &
         (pl.col("bcr").is_in(bcr_selections))
     )

@@ -297,7 +297,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
 
         file_url, _ = select_covariate_file(covariate_code)
 
-        fx_df = pl.read_csv(file_url).filter(
+        fx_df = pl.read_csv(file_url, null_values="NA").filter(
             (pl.col("species") == bird_code)
         )
 
