@@ -838,7 +838,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 "importance_mean", descending=True
             ).select(
                 ["variable", "region", "importance_mean"]
-            ).head().join(
+            ).join(
                 covariates.select(["variable", "name"]),
                 on="variable",
                 how="left",
