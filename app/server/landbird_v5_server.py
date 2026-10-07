@@ -833,7 +833,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         req(covariates is not None and not covariates.is_empty())
 
         importance_data = importance.filter(
-            pl.col("english") == input.species_v5()
+            (pl.col("english") == input.species_v5()) &
+            (pl.col("region").is_in(list(input.bcr_filter())))
             ).sort(
                 "importance_mean", descending=True
             ).select(
@@ -842,6 +843,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 covariates.select(["variable", "name"]),
                 on="variable",
                 how="left",
+                maintain_order="left",
             )
         
         importance_data = importance_data.with_columns(
