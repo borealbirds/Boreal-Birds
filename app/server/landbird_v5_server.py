@@ -817,26 +817,50 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         return f"Definition: {cov_desc}"
 
 
-    @render.data_frame
-    def importance_metrics() -> render.DataTable:
+    @render.ui
+    def importance_metrics() -> ui.Tag:
         """
-        [@render.data_frame] Output sorted tabular records using an analytical grid component.
+        [@render.ui] Output predictor importance scores, sorted, as an HTML table.
 
         Returns
         -------
-        DataGrid
-            Sorted metrics collection with active background rows highlighted.
+        ui.Tag
+            Scrollable table with rows for the selected predictor highlighted.
         """
 
         req(covariates is not None and not covariates.is_empty())
 
+        selected_bcrs = list(input.bcr_filter())
+        selected_covariate = input.covariate_filter()
+
         importance_data = importance.filter(
             (pl.col("english") == input.species_v5()) &
-            (pl.col("region").is_in(list(input.bcr_filter())))
-            ).sort(
-                "importance_mean", descending=True
+            (pl.col("region").is_in(selected_bcrs))
             ).select(
                 ["variable", "region", "importance_mean"]
+            )
+
+        # add an NA score for selected BCR's where the selected predictor is not in the model
+        missing_bcrs = [
+            bcr for bcr in selected_bcrs
+            if bcr not in importance_data.filter(pl.col("variable") == selected_covariate)
+                .get_column("region").to_list()
+        ]
+        if selected_covariate and missing_bcrs:
+            importance_data = pl.concat([
+                importance_data,
+                pl.DataFrame(
+                    {
+                        "variable": [selected_covariate] * len(missing_bcrs),
+                        "region": missing_bcrs,
+                        "importance_mean": [None] * len(missing_bcrs),
+                    },
+                    schema=importance_data.schema,
+                ),
+            ])
+
+        importance_data = importance_data.sort(
+                "importance_mean", descending=True, nulls_last=True
             ).join(
                 covariates.select(["variable", "name"]),
                 on="variable",
@@ -844,35 +868,40 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 maintain_order="left",
             )
         
-        # highlight rows for the predictor selected in the dropdown
-        selected_rows = (
-            importance_data.with_row_index()
-            .filter(pl.col("variable") == input.covariate_filter())
-            .get_column("index")
-            .to_list()
-        )
-        selected_style = [
-            {
-                "rows": selected_rows,
-                "style": {"background-color": "yellow"},
-            }
-        ] if selected_rows else None
-
         importance_data = importance_data.with_columns(
             pl.col("importance_mean").round(1),
             pl.coalesce(["name", "variable"]).alias("predictor_name"),
-        ).select(
-            ["predictor_name", "region", "importance_mean"]
+            # highlight rows for the predictor selected in the dropdown
+            (pl.col("variable") == selected_covariate).alias("selected"),
         )
-        
-        importance_data = importance_data.rename({
-            "predictor_name": "Predictor",
-            "region": "BCR",
-            "importance_mean": "Score"
-        })
 
+        # plain HTML table: render.DataTable styles only highlighted one BCR's row
+        # when several BCR's were selected
+        cell = "padding: 4px 8px; border-bottom: 1px solid #ddd;"
+        header = ui.tags.tr(
+            *[
+                ui.tags.th(col, style=f"{cell} position: sticky; top: 0; background: #eee; text-align: left;")
+                for col in ["Predictor", "BCR", "Score"]
+            ]
+        )
+        rows = [
+            ui.tags.tr(
+                ui.tags.td(row["predictor_name"], style=cell),
+                ui.tags.td(row["region"], style=cell),
+                ui.tags.td("NA" if row["importance_mean"] is None else row["importance_mean"], style=cell),
+                style="background-color: yellow;" if row["selected"] else None,
+            )
+            for row in importance_data.iter_rows(named=True)
+        ]
 
-        return render.DataTable(importance_data, height="210px", styles=selected_style)
+        return ui.div(
+            ui.tags.table(
+                ui.tags.thead(header),
+                ui.tags.tbody(*rows),
+                style="width: 100%; border-collapse: collapse; font-size: 0.9em;",
+            ),
+            style="max-height: 210px; overflow-y: auto;",
+        )
     
     @render.ui
     def marginal_fx_filter()-> ui.tags:
@@ -908,7 +937,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             ),
             ui.card(
                 ui.markdown(f"Predictor Importance for {bird}"),
-                ui.output_data_frame("importance_metrics"),
+                ui.output_ui("importance_metrics"),
                 fillable=True,
                 full_screen=True
             ),
