@@ -844,6 +844,20 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 maintain_order="left",
             )
         
+        # highlight rows for the predictor selected in the dropdown
+        selected_rows = (
+            importance_data.with_row_index()
+            .filter(pl.col("variable") == input.covariate_filter())
+            .get_column("index")
+            .to_list()
+        )
+        selected_style = [
+            {
+                "rows": selected_rows,
+                "style": {"background-color": "yellow"},
+            }
+        ] if selected_rows else None
+
         importance_data = importance_data.with_columns(
             pl.col("importance_mean").round(1),
             pl.coalesce(["name", "variable"]).alias("predictor_name"),
@@ -858,7 +872,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         })
 
 
-        return render.DataTable(importance_data, height="210px")
+        return render.DataTable(importance_data, height="210px", styles=selected_style)
     
     @render.ui
     def marginal_fx_filter()-> ui.tags:
