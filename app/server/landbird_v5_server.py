@@ -882,17 +882,17 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         return ui.layout_columns(
             ui.layout_columns(
                 ui.input_select(
-                    id="covariate_filter",
-                    label="Select Predictor",
-                    choices=cov_choices,
-                ),
-                # ui.output_text("covariate_desc"),
-                ui.input_select(
                     id="bcr_filter",
                     label="Select BCR (Multi-Select)",
                     choices=bcr_choices,
                     multiple=True,
                 ),
+                ui.input_select(
+                    id="covariate_filter",
+                    label="Select Predictor",
+                    choices=cov_choices,
+                ),
+                # ui.output_text("covariate_desc"),
                 col_widths=(12, 12, 12)
             ),
             ui.card(
