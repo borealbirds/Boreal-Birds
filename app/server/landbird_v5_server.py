@@ -276,44 +276,42 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         ui.update_navs("tabs", selected="Access & Tools")
 
     @reactive.effect
-    def update_bcr_filter() -> list:
+    def update_covariate_filter() -> None:
         """
-        Changes the selection of BCR's based on user selected covariate and bird species
+        Changes the predictor choices based on user selected bird species and BCR's
 
-        Returns
-        -------
-        List
-            List of applicable BCR's for a selected bird species and covariate
+        Only predictors used in the species' model for at least one selected BCR are offered.
+        Predictors without covariate metadata (e.g. Year) are dropped by the inner join.
         """
 
-        req(input.covariate_filter())
+        req(input.bcr_filter())
 
-        covariate_code = input.covariate_filter()
-        bird_code = (
-            birds
-            .filter(pl.col("english") == input.species_v5())
-            .item(0, "id")
-        )
-
-        file_url, _ = select_covariate_file(covariate_code)
-
-        fx_df = pl.read_csv(file_url, null_values="NA").filter(
-            (pl.col("species") == bird_code)
-        )
-
-        bcr_list = fx_df.get_column("bcr").unique().to_list()
-
-        bcr_choices = dict(
-            regions.filter(pl.col("region").is_in(bcr_list))
-            .select("region", "name_adj")
-            .sort("name_adj")
+        cov_choices = dict(
+            importance.filter(
+                (pl.col("english") == input.species_v5()) &
+                (pl.col("region").is_in(list(input.bcr_filter())))
+            )
+            .select("variable")
+            .unique()
+            .join(covariates.select(["variable", "name"]), on="variable", how="inner")
+            .select(
+                key=pl.col("variable"),
+                value=pl.concat_str(
+                    [pl.col("name"), pl.lit(": "), pl.col("variable")]
+                )
+            )
+            .sort("value")
             .iter_rows()
         )
 
+        # keep the current predictor if it is still valid
+        with reactive.isolate():
+            current = input.covariate_filter()
+
         ui.update_select(
-            "bcr_filter",
-            choices=bcr_choices,
-            selected=list(bcr_choices.keys())[0] if bcr_choices else None,
+            "covariate_filter",
+            choices=cov_choices,
+            selected=current if current in cov_choices else next(iter(cov_choices), None),
         )
 
     # Bird info UI
@@ -867,17 +865,15 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         """[@render.ui] Render variable select dropdown constraints for covariate analyses."""
         
         bird = current_bird_meta().item(0, "english")
-        cov_choices = dict(
-            covariates.select(
-                key=pl.col("variable"),
-                value=pl.concat_str(
-                    [pl.col("name"), pl.lit(": "), pl.col("variable")]
-                )
-            )
-            .sort("value")
+        # BCR's where the species was modelled; predictors are filled by update_covariate_filter
+        bcr_list = importance.filter(pl.col("english") == bird).get_column("region").unique().to_list()
+        bcr_choices = dict(
+            regions.filter(pl.col("region").is_in(bcr_list))
+            .select("region", "name_adj")
+            .sort("name_adj")
             .iter_rows()
         )
-        bcr_choices = []
+        cov_choices = {}
 
         return ui.layout_columns(
             ui.layout_columns(
@@ -885,6 +881,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                     id="bcr_filter",
                     label="Select BCR (Multi-Select)",
                     choices=bcr_choices,
+                    selected=next(iter(bcr_choices), None),
                     multiple=True,
                 ),
                 ui.input_select(
