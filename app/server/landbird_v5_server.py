@@ -386,7 +386,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         """
         info = raster_info()
         if info["status"] != "ready":
-            return get_map_error_html(info["status"])
+            return get_map_error_html(info["status"], input.species_v5(), input.region_v5())
 
         url = file_url()
         encoded_cog = requests.utils.quote(url, safe="")

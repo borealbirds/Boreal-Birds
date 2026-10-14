@@ -28,7 +28,7 @@ REGION_CENTERS = {
 REGION_DICT = load_region_data().rows_by_key(key="region", named=True, unique=True)
 
 
-def get_map_error_html(status: str) -> HTML:
+def get_map_error_html(status: str, species: str = "this species", region: str = "selected") -> HTML:
     """
     Generate fallback HTML widgets based on active raster tiler states from TiTiler API.
 
@@ -36,6 +36,10 @@ def get_map_error_html(status: str) -> HTML:
     ----------
     status : str
         The current status flag identifier ('missing', 'loading', 'tiler_starting', 'tiler_unavailable').
+    species : str
+        Common name of the selected bird species, used in the 'missing' message.
+    region : str
+        Name of the selected region, used in the 'missing' message.
 
     Returns
     -------
@@ -45,7 +49,7 @@ def get_map_error_html(status: str) -> HTML:
     messages = {
         "tiler_unavailable": ("Map service starting", "The raster tiling service (Titiler API) is currently unavailable. Please try again in a few minutes."),
         "tiler_starting": ("Loading raster", "Initializing selected raster."),
-        "missing": ("Raster unavailable", "The requested raster file could not be found."),
+        "missing": ("Density map unavailable", f"Density map for {species} is not available for the {region} region."),
         "loading": ("Loading Raster ...", "")
     }
     title, body = messages.get(status, ("Error", "An unexpected status occurred."))
