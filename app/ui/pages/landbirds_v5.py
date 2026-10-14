@@ -76,7 +76,6 @@ def landbirds_v5_tab() -> ui.nav_panel:
                         ui.layout_columns(
                             ui.markdown("""
                             **Explore how each environmental predictor is associated with predicted density of male birds per hectare.**
-                            'Species' filter applies.
                             """),
                             ui.layout_columns(
                                 ui.card(output_widget("marginal_fx_chart"), full_screen=True),
