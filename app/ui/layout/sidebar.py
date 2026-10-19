@@ -5,8 +5,9 @@ Dynamically extracts validated species catalog definitions to construct
 consistent dashboard filtering sidebars across distinct framework versions.
 """
 
+import polars as pl
 from shiny import ui
-from shared.data_loading import load_cog_species
+from shared.data_loading import load_cog_species, load_importance_data, load_species_metadata
 from shared.paths import PREDICTION_YEAR
 
 #def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
@@ -36,18 +37,48 @@ def sidebar(model_version: str) -> ui.sidebar:
     # only species with at least one density raster in the cloud cog_species folder
     species_choices = sorted(load_cog_species().get_column("english").to_list())
 
+    # Predictors tab: species with importance results; id converted to common name from the species sheet
+    predictor_species_choices = sorted(
+        load_importance_data().select("id", "english")
+        .unique()
+        .join(
+            load_species_metadata().select("id", pl.col("english").alias("common")),
+            on="id",
+            how="left",
+        )
+        .select(pl.coalesce(["common", "english"]))
+        .to_series()
+        .to_list()
+    )
+
+    # the Predictors tab shows its own species list; all other tabs show species and region
+    predictors_tab = "input.view_toggle === 'map' && input.results_tabs === 'Predictors'"
+
     sidebar_elements = [
-        ui.output_ui(f"sidebar_bird_image_{model_version}"),
-        ui.input_select(
-            f"species_{model_version}",
-            "Species",
-            choices=species_choices,
-            size=4
+        ui.panel_conditional(
+            predictors_tab,
+            ui.output_ui("sidebar_bird_image_predictors"),
+            ui.input_select(
+                "predictor_species",
+                "Species",
+                choices=predictor_species_choices,
+                size=4
+            ),
         ),
-        ui.input_select(
-            f"region_{model_version}",
-            "Region",
-            choices=["Canada", "Alaska", "Lower48"],
+        ui.panel_conditional(
+            f"!({predictors_tab})",
+            ui.output_ui(f"sidebar_bird_image_{model_version}"),
+            ui.input_select(
+                f"species_{model_version}",
+                "Species",
+                choices=species_choices,
+                size=4
+            ),
+            ui.input_select(
+                f"region_{model_version}",
+                "Region",
+                choices=["Canada", "Alaska", "Lower48"],
+            ),
         ),
     #]
     #

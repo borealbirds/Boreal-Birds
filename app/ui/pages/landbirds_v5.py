@@ -109,6 +109,7 @@ def landbirds_v5_tab() -> ui.nav_panel:
                             col_widths=(7, 5, 12),
                         ),
                     ),
+                    id="results_tabs",
                     title=ui.tooltip(
                         ui.span("Landbird Density & Habitat Results ", question_circle_fill),
                         "Population size is estimated by summing predicted male density across each region and is reported in millions of male birds.",

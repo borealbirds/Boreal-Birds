@@ -288,7 +288,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
 
         cov_choices = dict(
             importance.filter(
-                (pl.col("english") == input.species_v5()) &
+                (pl.col("english") == input.predictor_species()) &
                 (pl.col("region").is_in(list(input.bcr_filter())))
             )
             .select("variable")
@@ -344,13 +344,11 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
             class_="bird-header-content",
         )
 
-    @render.ui
-    def sidebar_bird_image_v5()-> ui.tags:
-        """[@render.ui] Render the sidebar profile picture for the active species if it exists."""
-        bird = current_bird_meta()
+    def bird_image_tag(bird: pl.DataFrame) -> ui.tags:
+        """Build the sidebar profile picture tag for a species metadata row if the image exists."""
         if len(bird) == 0:
             return ui.span()
-            
+
         img_info = get_sidebar_image_path(bird.item(0, "id"), bird.item(0, "english"))
         if img_info:
             src_path, folder_name = img_info
@@ -361,6 +359,16 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
                 onerror="this.style.display='none'",
             )
         return ui.span()
+
+    @render.ui
+    def sidebar_bird_image_v5()-> ui.tags:
+        """[@render.ui] Render the sidebar profile picture for the active species if it exists."""
+        return bird_image_tag(current_bird_meta())
+
+    @render.ui
+    def sidebar_bird_image_predictors()-> ui.tags:
+        """[@render.ui] Render the sidebar profile picture for the Predictors tab species if it exists."""
+        return bird_image_tag(birds.filter(pl.col("english") == input.predictor_species()))
 
 
     # Map Rendering
@@ -834,7 +842,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
         selected_covariate = input.covariate_filter()
 
         importance_data = importance.filter(
-            (pl.col("english") == input.species_v5()) &
+            (pl.col("english") == input.predictor_species()) &
             (pl.col("region").is_in(selected_bcrs))
             ).select(
                 ["variable", "region", "importance_mean"]
@@ -907,7 +915,8 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
     def marginal_fx_filter()-> ui.tags:
         """[@render.ui] Render variable select dropdown constraints for covariate analyses."""
         
-        bird = current_bird_meta().item(0, "english")
+        # species from the Predictors tab sidebar (species with importance results)
+        bird = input.predictor_species()
         # BCR's where the species was modelled; predictors are filled by update_covariate_filter
         bcr_list = importance.filter(pl.col("english") == bird).get_column("region").unique().to_list()
         bcr_choices = dict(
@@ -948,7 +957,7 @@ def landbird_v5_server(input: Inputs, output: Outputs, session: Session):
     def marginal_fx_chart()-> alt.Chart:     
         return covariate_chart(
             input.covariate_filter(),
-            input.species_v5(),
+            input.predictor_species(),
             input.bcr_filter(),
         )
 
