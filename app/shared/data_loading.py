@@ -19,6 +19,7 @@ All tabular data workflows utilize the high-performance `polars` engine.
 import requests
 import polars as pl
 import yaml
+from concurrent.futures import ThreadPoolExecutor
 
 from shared.paths import *
 
@@ -67,6 +68,43 @@ def load_species_metadata() -> pl.DataFrame:
         A Polars DataFrame containing the 'species' sheet metadata.
     """
     return pl.read_excel(LANDBIRD_V5_RESULTS, sheet_name="species")
+
+
+def load_cog_species(regions: tuple[str, ...] = ("Canada", "Alaska", "Lower48")) -> pl.DataFrame:
+    """
+    Load the species that have at least one density raster in the cloud cog_species folder.
+
+    The server does not allow directory listings, so the expected raster file
+    (cog_species/{id}/{region}/{id}_{region}_{PREDICTION_YEAR}.tif) is checked
+    with a HEAD request for each species and region.
+
+    Parameters
+    ----------
+    regions : tuple of str
+        The regions to check for each species.
+
+    Returns
+    -------
+    pl.DataFrame
+        The rows of the 'species' sheet metadata for species with at least one raster.
+    """
+    species = load_species_metadata()
+    session = requests.Session()
+
+    def has_raster(species_id: str) -> bool:
+        for region in regions:
+            try:
+                url = get_tif_path(species_id, region, PREDICTION_YEAR)
+                if session.head(url, timeout=10).status_code == 200:
+                    return True
+            except requests.RequestException:
+                pass
+        return False
+
+    with ThreadPoolExecutor(max_workers=16) as executor:
+        available = list(executor.map(has_raster, species.get_column("id").to_list()))
+
+    return species.filter(pl.Series(available))
 
 
 def load_covariate_metadata() -> pl.DataFrame:

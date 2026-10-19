@@ -6,7 +6,7 @@ consistent dashboard filtering sidebars across distinct framework versions.
 """
 
 from shiny import ui
-from shared.data_loading import load_species_metadata
+from shared.data_loading import load_cog_species
 from shared.paths import PREDICTION_YEAR
 
 #def sidebar(model_version: str, year_slider: bool = True) -> ui.sidebar:
@@ -33,7 +33,8 @@ def sidebar(model_version: str) -> ui.sidebar:
     """
         
 
-    species_choices = sorted(load_species_metadata().get_column("english").to_list())
+    # only species with at least one density raster in the cloud cog_species folder
+    species_choices = sorted(load_cog_species().get_column("english").to_list())
 
     sidebar_elements = [
         ui.output_ui(f"sidebar_bird_image_{model_version}"),
